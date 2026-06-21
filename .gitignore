@@ -1,0 +1,73 @@
+# Logs
+
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Dependencies
+
+node_modules/
+
+# Build Output
+
+dist/
+dist-ssr/
+build/
+
+# Environment Variables
+
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Local-only config
+
+*.local
+
+# Coverage
+
+coverage/
+
+# Vite
+
+.vite/
+
+# TypeScript
+
+*.tsbuildinfo
+
+# Editor directories and files
+
+.vscode/*
+!.vscode/extensions.json
+.idea/
+
+# Operating System files
+
+.DS_Store
+Thumbs.db
+
+# Visual Studio
+
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# Swap files
+
+*.sw?
+*.swp
+
+# Temporary files
+
+.backup_git/
+reconstruct_history.ps1
+*.tmp
+*.temp
