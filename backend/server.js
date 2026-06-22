@@ -13,6 +13,10 @@ const departmentRoutes =
 require("./src/routes/departmentRoutes");
 app.use("/api/departments", departmentRoutes);
 
+const studentRoutes =
+require("./src/routes/studentRoutes");
+app.use("/api/students", studentRoutes);
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
