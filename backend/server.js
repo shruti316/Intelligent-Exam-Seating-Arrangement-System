@@ -3,10 +3,15 @@ require('dotenv').config();
 
 const db = require('./src/config/db');
 const app = express();
+app.use(express.json());
 
 app.get('/', (req, res) => {
     res.send('Intelligent Exam Seating Arrangement System API!');
 });
+
+const departmentRoutes =
+require("./src/routes/departmentRoutes");
+app.use("/api/departments", departmentRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
