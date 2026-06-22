@@ -71,3 +71,30 @@ Thumbs.db
 reconstruct_history.ps1
 *.tmp
 *.temp
+
+
+# Node modules
+backend/node_modules/
+frontend/node_modules/
+
+# Environment files
+backend/.env
+frontend/.env
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# VS Code
+.vscode/
+
+# Build folders
+dist/
+build/
+
+
+node_modules/
+.env
