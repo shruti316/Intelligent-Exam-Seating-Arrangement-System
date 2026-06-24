@@ -25,6 +25,10 @@ const examRoutes =
 require("./src/routes/examRoutes");
 app.use("/api/exams", examRoutes);
 
+const registrationRoutes =
+require("./src/routes/registrationRoutes");
+app.use("/api/registrations", registrationRoutes);
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
