@@ -29,6 +29,10 @@ const registrationRoutes =
 require("./src/routes/registrationRoutes");
 app.use("/api/registrations", registrationRoutes);
 
+const seatingPlanRoutes =
+require("./src/routes/seatingPlanRoutes");
+app.use("/api/seating-plans", seatingPlanRoutes);
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
