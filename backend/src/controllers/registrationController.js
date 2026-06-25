@@ -82,9 +82,40 @@ const deleteRegistration = (req, res) => {
     });
 };
 
+const getRegistrationDetails = (req, res) => {
+
+    const sql = `
+        SELECT
+            er.registration_id,
+            s.student_id,
+            s.roll_no,
+            CONCAT(s.first_name, ' ', s.last_name) AS student_name,
+            e.exam_id,
+            e.exam_name,
+            e.subject_code,
+            e.subject_name,
+            e.exam_date
+        FROM exam_registrations er
+        JOIN students s
+            ON er.student_id = s.student_id
+        JOIN exams e
+            ON er.exam_id = e.exam_id
+    `;
+
+    db.query(sql, (err, result) => {
+
+        if (err) {
+            return res.status(500).json(err);
+        }
+
+        res.status(200).json(result);
+    });
+};
+
 module.exports = {
     getAllRegistrations,
     getRegistrationById,
     createRegistration,
-    deleteRegistration
+    deleteRegistration,
+    getRegistrationDetails
 };

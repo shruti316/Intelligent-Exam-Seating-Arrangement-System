@@ -142,10 +142,39 @@ const deleteStudent = (req, res) => {
     });
 };
 
+const getStudentDetails = (req, res) => {
+
+    const sql = `
+        SELECT
+            s.student_id,
+            s.roll_no,
+            s.first_name,
+            s.last_name,
+            s.section,
+            s.semester,
+            d.department_name,
+            d.department_code,
+            d.home_zone
+        FROM students s
+        JOIN departments d
+        ON s.department_id = d.department_id
+    `;
+
+    db.query(sql, (err, result) => {
+
+        if (err) {
+            return res.status(500).json(err);
+        }
+
+        res.status(200).json(result);
+    });
+};
+
 module.exports = {
     getAllStudents,
     getStudentById,
     createStudent,
     updateStudent,
-    deleteStudent
+    deleteStudent,
+    getStudentDetails
 };

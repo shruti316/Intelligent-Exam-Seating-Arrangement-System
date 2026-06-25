@@ -85,9 +85,37 @@ const deleteSeatingPlan = (req, res) => {
     });
 };
 
+const getSeatingPlanDetails = (req, res) => {
+
+    const sql = `
+        SELECT
+            sp.plan_id,
+            sp.algorithm_version,
+            sp.generated_at,
+            e.exam_id,
+            e.exam_name,
+            e.subject_code,
+            e.subject_name,
+            e.exam_date
+        FROM seating_plans sp
+        JOIN exams e
+        ON sp.exam_id = e.exam_id
+    `;
+
+    db.query(sql, (err, result) => {
+
+        if (err) {
+            return res.status(500).json(err);
+        }
+
+        res.status(200).json(result);
+    });
+};
+
 module.exports = {
     getAllSeatingPlans,
     getSeatingPlanById,
     createSeatingPlan,
-    deleteSeatingPlan
+    deleteSeatingPlan,
+    getSeatingPlanDetails
 };

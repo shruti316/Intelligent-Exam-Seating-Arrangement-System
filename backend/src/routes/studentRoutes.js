@@ -6,10 +6,13 @@ const {
     getStudentById,
     createStudent,
     updateStudent,
-    deleteStudent
+    deleteStudent,
+    getStudentDetails
 } = require("../controllers/studentController");
 
 router.get("/", getAllStudents);
+
+router.get("/details", getStudentDetails);
 
 router.get("/:id", getStudentById);
 
