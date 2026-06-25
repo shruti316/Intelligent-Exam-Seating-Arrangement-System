@@ -37,6 +37,10 @@ const seatAssignmentRoutes =
 require("./src/routes/seatAssignmentRoutes");
 app.use("/api/seat-assignments", seatAssignmentRoutes);
 
+const seatingRoutes = 
+require("./src/routes/seatingRoutes");
+app.use("/api/seating", seatingRoutes);
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
