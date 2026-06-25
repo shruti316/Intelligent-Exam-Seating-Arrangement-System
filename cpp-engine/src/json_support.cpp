@@ -12,7 +12,7 @@
 
 namespace
 {
-    // Replaces std::gmtime_r/gmtime_s with a cross-platform helper
+    // Replaces std::gmtime_r/gmtime_s with a cross-platform helper using standard std::gmtime
     std::string getISO8601Timestamp()
     {
         auto now = std::chrono::system_clock::now();
@@ -217,9 +217,10 @@ namespace json
         if (includeDecision)
         {
             jsonStr += ",\"decision\":{";
-            jsonStr += "\"totalScore\":" + std::to_string(sa.decision.totalScore) + ",";
+            jsonStr += "\"score\":" + std::to_string(sa.decision.score) + ",";
             jsonStr += "\"orthogonalPenalty\":" + std::to_string(sa.decision.orthogonalPenalty) + ",";
-            jsonStr += "\"diagonalPenalty\":" + std::to_string(sa.decision.diagonalPenalty);
+            jsonStr += "\"diagonalPenalty\":" + std::to_string(sa.decision.diagonalPenalty) + ",";
+            jsonStr += "\"strategy\":\"" + Traversal::strategyToString(sa.decision.strategy) + "\"";
             jsonStr += "}";
         }
 
@@ -227,12 +228,12 @@ namespace json
         return jsonStr;
     }
 
-    std::string allocationResultToJson(const AllocationResult& result, const EngineConfig& config)
+    std::string allocationReportToJson(const AllocationReport& report, const EngineConfig& config)
     {
-        if (result.validationError != ValidationError::OK)
+        if (!report.success)
         {
-            std::string errStr = validationErrorToString(result.validationError);
-            int code = validationErrorCode(result.validationError);
+            std::string errStr = validationErrorToString(report.error);
+            int code = validationErrorCode(report.error);
 
             std::string jsonStr = "{";
             jsonStr += "\"status\":\"error\",";
@@ -244,12 +245,13 @@ namespace json
 
         std::string jsonStr = "{";
         jsonStr += "\"status\":\"success\",";
-        jsonStr += "\"algorithm\":\"Cooldown + Score Based\",";
+        jsonStr += "\"engineVersion\":\"" + std::string(ENGINE_VERSION) + "\",";
+        jsonStr += "\"algorithm\":\"Cooldown + ScoreBased\",";
         jsonStr += "\"traversal\":\"" + Traversal::strategyToString(config.traversal) + "\",";
         jsonStr += "\"generatedAt\":\"" + getISO8601Timestamp() + "\",";
 
         // Summary
-        const auto& stats = result.stats;
+        const auto& stats = report.stats;
         jsonStr += "\"summary\":{";
         jsonStr += "\"totalStudents\":" + std::to_string(stats.totalStudents) + ",";
         jsonStr += "\"totalRooms\":" + std::to_string(stats.totalRooms) + ",";
@@ -264,12 +266,45 @@ namespace json
         jsonStr += "\"executionTimeMs\":" + std::to_string(stats.executionTimeMs);
         jsonStr += "},";
 
+        // Rooms Utilization & Section Distribution
+        jsonStr += "\"rooms\":[";
+        for (std::size_t i = 0; i < stats.rooms.size(); ++i)
+        {
+            const auto& rUtil = stats.rooms[i];
+            jsonStr += "{";
+            jsonStr += "\"classroomId\":" + std::to_string(rUtil.classroomId) + ",";
+            jsonStr += "\"roomNo\":\"" + escapeString(rUtil.roomNo) + "\",";
+            jsonStr += "\"occupiedSeats\":" + std::to_string(rUtil.occupiedSeats) + ",";
+            jsonStr += "\"totalCapacity\":" + std::to_string(rUtil.totalCapacity) + ",";
+            jsonStr += "\"utilizationPercentage\":" + std::to_string(rUtil.utilizationPercentage) + ",";
+            
+            // Section Distribution dictionary serialization
+            jsonStr += "\"sectionDistribution\":{";
+            for (std::size_t j = 0; j < rUtil.sectionDistribution.size(); ++j)
+            {
+                const auto& secCount = rUtil.sectionDistribution[j];
+                jsonStr += "\"" + escapeString(secCount.section) + "\":" + std::to_string(secCount.count);
+                if (j + 1 < rUtil.sectionDistribution.size())
+                {
+                    jsonStr += ",";
+                }
+            }
+            jsonStr += "}";
+
+            jsonStr += "}";
+            if (i + 1 < stats.rooms.size())
+            {
+                jsonStr += ",";
+            }
+        }
+        jsonStr += "],";
+
         // Assignments
         jsonStr += "\"assignments\":[";
-        for (std::size_t i = 0; i < result.assignments.size(); ++i)
+        for (std::size_t i = 0; i < report.result.assignments.size(); ++i)
         {
-            jsonStr += seatAssignmentToJson(result.assignments[i], config.includeDecisionMetadata);
-            if (i + 1 < result.assignments.size())
+            jsonStr += seatAssignmentToJson(report.result.assignments[i], config.generateDecisionMetadata);
+            if (i + 1 < report.result.assignments.size())
             {
                 jsonStr += ",";
             }
@@ -280,7 +315,7 @@ namespace json
         return jsonStr;
     }
 
-    void writeOutputJson(const AllocationResult& result, const EngineConfig& config, const std::string& path)
+    void writeOutputJson(const AllocationReport& report, const EngineConfig& config, const std::string& path)
     {
         std::ofstream file(path);
         if (!file.is_open())
@@ -288,7 +323,7 @@ namespace json
             std::cerr << "Error: Could not open output file: " << path << std::endl;
             return;
         }
-        file << allocationResultToJson(result, config);
+        file << allocationReportToJson(report, config);
         file.close();
     }
 

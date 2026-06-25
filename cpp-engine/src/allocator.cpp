@@ -10,20 +10,22 @@
 #include <iostream>
 #include <limits>
 
-AllocationResult Allocator::allocate(
+AllocationReport Allocator::allocate(
     const std::vector<Student>& students,
     const std::vector<Room>&    rooms)
 {
     auto startTime = std::chrono::high_resolution_clock::now();
 
-    AllocationResult result;
+    AllocationReport report;
+    report.success = false;
 
     // 1. Validate inputs
     ValidationError err = Validator::validateInput(students, rooms);
     if (err != ValidationError::OK)
     {
-        result.validationError = err;
-        return result;
+        report.success = false;
+        report.error = err;
+        return report;
     }
 
     // 2. Group students by section
@@ -36,7 +38,7 @@ AllocationResult Allocator::allocate(
     auto roomAllocations = Distributor::distributeStudentsToRooms(orderedStudents, rooms);
 
     SeatScorer scorer(config);
-    result.assignments.reserve(students.size());
+    report.result.assignments.reserve(students.size());
 
     // 5. Seat allocation per room
     for (const auto& allocation : roomAllocations)
@@ -78,7 +80,7 @@ AllocationResult Allocator::allocate(
                 SeatDecision dec = scorer.calculateSeatDecision(grid, r, c, student);
 
                 // Calculate effective score incorporating adjacency enforcement
-                int effectiveScore = dec.totalScore;
+                int effectiveScore = dec.score;
                 if (config.enforceAdjacency && dec.orthogonalPenalty > 0)
                 {
                     effectiveScore += 100000; // Force validation penalty offset
@@ -99,7 +101,7 @@ AllocationResult Allocator::allocate(
                 int bc = bestSeat.col - 1;
                 grid.seats[br][bc] = &student;
 
-                result.assignments.push_back({
+                report.result.assignments.push_back({
                     student.studentId,
                     student.rollNo,
                     student.section,
@@ -123,16 +125,19 @@ AllocationResult Allocator::allocate(
     double elapsedMs = std::chrono::duration<double, std::milli>(endTime - startTime).count();
 
     // 6. Compute statistics if requested
-    if (config.generateStatistics)
+    if (config.collectStatistics)
     {
-        result.stats = calculateStats(students, rooms, result, elapsedMs);
+        report.stats = calculateStats(students, rooms, report.result, elapsedMs);
     }
     else
     {
-        result.stats.totalStudents = static_cast<int>(students.size());
-        result.stats.totalRooms = static_cast<int>(rooms.size());
-        result.stats.executionTimeMs = elapsedMs;
+        report.stats.totalStudents = static_cast<int>(students.size());
+        report.stats.totalRooms = static_cast<int>(rooms.size());
+        report.stats.executionTimeMs = elapsedMs;
     }
 
-    return result;
+    report.success = true;
+    report.error = ValidationError::OK;
+
+    return report;
 }

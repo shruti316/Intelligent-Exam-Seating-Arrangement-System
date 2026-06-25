@@ -28,4 +28,7 @@ public:
     // Individual penalty components for clear extensibility
     int calculateOrthogonalPenalty(const SeatingGrid& grid, int row, int col, const Student& student) const;
     int calculateDiagonalPenalty(const SeatingGrid& grid, int row, int col, const Student& student) const;
+    int calculateDistance2Penalty(const SeatingGrid& grid, int row, int col, const Student& student) const;
+    int calculateRowSectionPenalty(const SeatingGrid& grid, int row, int col, const Student& student) const;
+    int calculateColSectionPenalty(const SeatingGrid& grid, int row, int col, const Student& student) const;
 };

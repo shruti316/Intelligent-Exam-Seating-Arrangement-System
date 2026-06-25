@@ -3,6 +3,10 @@
 #include <string>
 #include <vector>
 
+// ─── Versioning ────────────────────────────────────────────────────────────
+
+constexpr char ENGINE_VERSION[] = "1.0.0";
+
 // ─── Traversal Strategy Enum ───────────────────────────────────────────────
 
 enum class TraversalStrategy
@@ -21,36 +25,56 @@ struct EngineConfig
     TraversalStrategy traversal = TraversalStrategy::Snake;
     int               orthogonalPenalty = 10;
     int               diagonalPenalty = 3;
-    bool              enforceAdjacency = true;
     bool              deterministic = true;
-    bool              generateStatistics = true;
-    bool              includeDecisionMetadata = true;
+    bool              collectStatistics = true;
+    bool              generateDecisionMetadata = true;
+    bool              enforceAdjacency = true; // Kept for compatibility/functionality
 };
 
 // ─── Decision Metadata ─────────────────────────────────────────────────────
 
 struct SeatDecision
 {
-    int totalScore = 0;
-    int orthogonalPenalty = 0;
-    int diagonalPenalty = 0;
+    int               score = 0;
+    int               orthogonalPenalty = 0;
+    int               diagonalPenalty = 0;
+    TraversalStrategy strategy = TraversalStrategy::Snake;
+};
+
+// ─── Room Utilization & Distribution ───────────────────────────────────────
+
+struct SectionCount
+{
+    std::string section;
+    int         count = 0;
+};
+
+struct RoomUtilization
+{
+    int                       classroomId = 0;
+    std::string               roomNo;
+    int                       occupiedSeats = 0;
+    int                       totalCapacity = 0;
+    double                    utilizationPercentage = 0.0;
+    std::vector<SectionCount> sectionDistribution;
 };
 
 // ─── Seating Statistics ────────────────────────────────────────────────────
 
 struct AllocationStats
 {
-    int    totalStudents = 0;
-    int    totalRooms = 0;
-    int    totalCapacity = 0;
-    int    occupiedSeats = 0;
-    int    emptySeats = 0;
-    double occupancyPercentage = 0.0;
-    int    orthogonalConflicts = 0;
-    int    diagonalConflicts = 0;
-    int    totalConflicts = 0;
-    double averageConflictScore = 0.0;
-    double executionTimeMs = 0.0;
+    int                          totalStudents = 0;
+    int                          totalRooms = 0;
+    int                          totalCapacity = 0;
+    int                          occupiedSeats = 0;
+    int                          emptySeats = 0;
+    double                       occupancyPercentage = 0.0;
+    int                          orthogonalConflicts = 0;
+    int                          diagonalConflicts = 0;
+    int                          totalConflicts = 0;
+    double                       averageConflictScore = 0.0;
+    double                       executionTimeMs = 0.0;
+    std::vector<RoomUtilization> rooms;
 };
 
 // ─── Core Domain Models ────────────────────────────────────────────────────
@@ -115,8 +139,14 @@ enum class ValidationError
 struct AllocationResult
 {
     std::vector<SeatAssignment> assignments;
-    AllocationStats             stats;
-    ValidationError             validationError = ValidationError::OK;
+};
+
+struct AllocationReport
+{
+    bool             success = false;
+    ValidationError  error = ValidationError::OK;
+    AllocationResult result;
+    AllocationStats  stats;
 };
 
 std::string validationErrorToString(ValidationError err);

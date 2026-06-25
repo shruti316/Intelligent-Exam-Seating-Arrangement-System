@@ -12,12 +12,12 @@ namespace json
     // Serializes a SeatAssignment structure, conditionally including SeatDecision metadata
     std::string seatAssignmentToJson(const SeatAssignment& sa, bool includeDecision);
 
-    // Serializes the full AllocationResult to JSON matching success/error formats
-    std::string allocationResultToJson(const AllocationResult& result, const EngineConfig& config);
+    // Serializes the full AllocationReport to JSON matching success/error formats
+    std::string allocationReportToJson(const AllocationReport& report, const EngineConfig& config);
 
     // Writes the JSON response to the output file path
     void writeOutputJson(
-        const AllocationResult& result,
+        const AllocationReport& report,
         const EngineConfig&     config,
         const std::string&      path = "output.json");
 

@@ -13,7 +13,7 @@ public:
     Allocator(const EngineConfig& cfg) : config(cfg) {}
 
     // Main allocation execution entry point
-    AllocationResult allocate(
+    AllocationReport allocate(
         const std::vector<Student>& students,
         const std::vector<Room>&    rooms);
 };

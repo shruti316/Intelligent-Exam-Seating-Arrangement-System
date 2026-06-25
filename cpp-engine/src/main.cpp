@@ -40,23 +40,23 @@ int main(int argc, char* argv[])
     config.diagonalPenalty = 3;
     config.enforceAdjacency = true;
     config.deterministic = true;
-    config.generateStatistics = true;
-    config.includeDecisionMetadata = true;
+    config.collectStatistics = true;
+    config.generateDecisionMetadata = true;
 
     // Initialize allocator coordinator
     Allocator allocator(config);
 
     // Perform allocation
-    AllocationResult result = allocator.allocate(students, rooms);
+    AllocationReport report = allocator.allocate(students, rooms);
 
-    // Write result JSON (handles success and error schemas)
-    json::writeOutputJson(result, config, outputPath);
+    // Write report JSON (handles success and error schemas)
+    json::writeOutputJson(report, config, outputPath);
 
-    if (result.validationError != ValidationError::OK)
+    if (!report.success)
     {
-        std::cerr << "Validation Error (Code " << validationErrorCode(result.validationError) << "): "
-                  << validationErrorToString(result.validationError) << std::endl;
-        return validationErrorCode(result.validationError);
+        std::cerr << "Validation Error (Code " << validationErrorCode(report.error) << "): "
+                  << validationErrorToString(report.error) << std::endl;
+        return validationErrorCode(report.error);
     }
 
     // Success: Print statistics to stdout
@@ -64,17 +64,18 @@ int main(int argc, char* argv[])
     std::cout << "        Exam Seating Allocation Completed        " << std::endl;
     std::cout << "=================================================" << std::endl;
     std::cout << "  Status                 : SUCCESS" << std::endl;
-    std::cout << "  Total Students         : " << result.stats.totalStudents << std::endl;
-    std::cout << "  Total Rooms            : " << result.stats.totalRooms << std::endl;
-    std::cout << "  Total Capacity         : " << result.stats.totalCapacity << std::endl;
-    std::cout << "  Used Capacity          : " << result.stats.occupiedSeats << std::endl;
-    std::cout << "  Empty Seats            : " << result.stats.emptySeats << std::endl;
-    std::cout << "  Occupancy %            : " << result.stats.occupancyPercentage << " %" << std::endl;
-    std::cout << "  Orthogonal Conflicts   : " << result.stats.orthogonalConflicts << std::endl;
-    std::cout << "  Diagonal Conflicts     : " << result.stats.diagonalConflicts << std::endl;
-    std::cout << "  Total Conflicts        : " << result.stats.totalConflicts << std::endl;
-    std::cout << "  Average Conflict Score : " << result.stats.averageConflictScore << std::endl;
-    std::cout << "  Execution Time (ms)    : " << result.stats.executionTimeMs << " ms" << std::endl;
+    std::cout << "  Engine Version         : " << ENGINE_VERSION << std::endl;
+    std::cout << "  Total Students         : " << report.stats.totalStudents << std::endl;
+    std::cout << "  Total Rooms            : " << report.stats.totalRooms << std::endl;
+    std::cout << "  Total Capacity         : " << report.stats.totalCapacity << std::endl;
+    std::cout << "  Used Capacity          : " << report.stats.occupiedSeats << std::endl;
+    std::cout << "  Empty Seats            : " << report.stats.emptySeats << std::endl;
+    std::cout << "  Occupancy %            : " << report.stats.occupancyPercentage << " %" << std::endl;
+    std::cout << "  Orthogonal Conflicts   : " << report.stats.orthogonalConflicts << std::endl;
+    std::cout << "  Diagonal Conflicts     : " << report.stats.diagonalConflicts << std::endl;
+    std::cout << "  Total Conflicts        : " << report.stats.totalConflicts << std::endl;
+    std::cout << "  Average Conflict Score : " << report.stats.averageConflictScore << std::endl;
+    std::cout << "  Execution Time (ms)    : " << report.stats.executionTimeMs << " ms" << std::endl;
     std::cout << "=================================================" << std::endl;
 
     return 0;
