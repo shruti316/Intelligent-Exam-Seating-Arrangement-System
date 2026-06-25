@@ -1,0 +1,10 @@
+{
+  "students": [
+    {"studentId": 1, "rollNo": "CS01", "department": "CSE", "section": "A"},
+    {"studentId": 2, "rollNo": "CS02", "department": "CSE", "section": "A"},
+    {"studentId": 3, "rollNo": "CS03", "department": "CSE", "section": "A"}
+  ],
+  "rooms": [
+    {"classroomId": 101, "roomNo": "Room A", "rows": 1, "cols": 1}
+  ]
+}

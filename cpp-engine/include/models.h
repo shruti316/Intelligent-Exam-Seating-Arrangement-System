@@ -3,48 +3,121 @@
 #include <string>
 #include <vector>
 
+// ─── Traversal Strategy Enum ───────────────────────────────────────────────
+
+enum class TraversalStrategy
+{
+    RowMajor,
+    Snake,
+    Spiral,
+    Checkerboard,
+    CenterOut
+};
+
+// ─── Engine Configuration ──────────────────────────────────────────────────
+
+struct EngineConfig
+{
+    TraversalStrategy traversal = TraversalStrategy::Snake;
+    int               orthogonalPenalty = 10;
+    int               diagonalPenalty = 3;
+    bool              enforceAdjacency = true;
+    bool              deterministic = true;
+    bool              generateStatistics = true;
+    bool              includeDecisionMetadata = true;
+};
+
+// ─── Decision Metadata ─────────────────────────────────────────────────────
+
+struct SeatDecision
+{
+    int totalScore = 0;
+    int orthogonalPenalty = 0;
+    int diagonalPenalty = 0;
+};
+
+// ─── Seating Statistics ────────────────────────────────────────────────────
+
+struct AllocationStats
+{
+    int    totalStudents = 0;
+    int    totalRooms = 0;
+    int    totalCapacity = 0;
+    int    occupiedSeats = 0;
+    int    emptySeats = 0;
+    double occupancyPercentage = 0.0;
+    int    orthogonalConflicts = 0;
+    int    diagonalConflicts = 0;
+    int    totalConflicts = 0;
+    double averageConflictScore = 0.0;
+    double executionTimeMs = 0.0;
+};
+
+// ─── Core Domain Models ────────────────────────────────────────────────────
+
 struct Student
 {
-    int studentId;
-
+    int         studentId;
     std::string rollNo;
-
     std::string department;
     std::string section;
 };
 
 struct Room
 {
-    int classroomId;
-
+    int         classroomId;
     std::string roomNo;
+    int         rows;
+    int         cols;
 
-    int rows;
-    int cols;
+    int capacity() const { return rows * cols; }
+};
 
-    int capacity() const
-    {
-        return rows * cols;
-    }
+struct SeatCoordinate
+{
+    int row;   // 1-indexed
+    int col;   // 1-indexed
 };
 
 struct SeatAssignment
 {
-    int studentId;
+    int          studentId;
+    std::string  rollNo;
+    std::string  section;
+    int          classroomId;
+    int          row;
+    int          col;
+    std::string  seatLabel;   // e.g. "R2C3"
+    SeatDecision decision;
+};
 
-    std::string rollNo;
+struct RoomAllocation
+{
+    Room                 room;
+    std::vector<Student> students;
+};
 
-    std::string section;
+// ─── Validation Error ──────────────────────────────────────────────────────
 
-    int classroomId;
-
-    int row;
-    int col;
-
-    std::string seatLabel;
+enum class ValidationError
+{
+    OK = 0,
+    EMPTY_STUDENTS = 100,
+    EMPTY_ROOMS = 101,
+    DUPLICATE_STUDENT_ID = 102,
+    DUPLICATE_ROLL_NUMBER = 103,
+    EMPTY_STUDENT_SECTION = 104,
+    INVALID_ROOM_DIMENSIONS = 105,
+    DUPLICATE_CLASSROOM_ID = 106,
+    INSUFFICIENT_CAPACITY = 107
 };
 
 struct AllocationResult
 {
     std::vector<SeatAssignment> assignments;
+    AllocationStats             stats;
+    ValidationError             validationError = ValidationError::OK;
 };
+
+std::string validationErrorToString(ValidationError err);
+int validationErrorCode(ValidationError err);
