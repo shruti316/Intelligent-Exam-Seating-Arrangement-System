@@ -55,6 +55,18 @@ Thumbs.db
 
 # Visual Studio
 
+node_modules
+dist
+dist-ssr
+*.local
+.env
+coverage
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
 *.suo
 *.ntvs*
 *.njsproj
@@ -98,3 +110,9 @@ build/
 
 node_modules/
 .env
+*.sw?
+
+# Temporary files
+.backup_git/
+reconstruct_history.ps1
+
