@@ -915,3 +915,14 @@ VALUES
 (218,4),
 (219,4),
 (220,4);
+SELECT COUNT(*) FROM departments;
+SELECT COUNT(*) FROM classrooms;
+SELECT COUNT(*) FROM exams;
+SELECT COUNT(*) FROM students;
+SELECT COUNT(*) FROM exam_registrations;
+
+SELECT COUNT(*) AS departments FROM departments;
+SELECT COUNT(*) AS classrooms FROM classrooms;
+SELECT COUNT(*) AS exams FROM exams;
+SELECT COUNT(*) AS students FROM students;
+SELECT COUNT(*) AS registrations FROM exam_registrations;
