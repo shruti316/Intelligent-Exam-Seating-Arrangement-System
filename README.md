@@ -1,74 +1,172 @@
 # Intelligent Exam Seating Arrangement System
 
-## Description
-
-The Intelligent Exam Seating Arrangement System is a web-based application designed to automate and optimize the process of allocating students to examination halls and seats. The system aims to reduce manual effort, improve room utilization, and minimize opportunities for malpractice during examinations.
-
-The application generates seating arrangements based on predefined constraints such as room capacity, student department, section, and roll number sequence. By using graph-based conflict modeling and greedy allocation techniques, the system ensures that students with potential conflicts are separated while maintaining efficient seat distribution.
-
-The platform provides features for student management, room management, automated seating generation, classroom visualization, and report generation, making the examination arrangement process faster, more organized, and more reliable.
+An AI-assisted Exam Seating Arrangement System that automatically generates optimized seating plans using a C++ allocation engine, a Node.js backend, MySQL database, and React frontend.
 
 ---
 
-## Key Features
+# Features
 
-* Student data management
-* Room and capacity management
-* Automated seating allocation
-* Conflict-aware seat arrangement
-* Classroom seat visualization
-* PDF seating report generation
-* Anti-cheating score analysis
-
----
-
-## Tech Stack
-
-### Frontend
-
-* React.js
-
-### Backend
-
-* Node.js
-* Express.js
-
-### Database
-
-* MySQL
-
-### Algorithm Module
-
-* C++
-
-### Additional Tools
-
-* PDFKit
-* XLSX/CSV Parser
-* Git & GitHub
+- Student Management
+- Classroom Management
+- Exam Management
+- Automated Seating Generation
+- JSON-based C++ Integration
+- RESTful APIs
+- Seating Plan Retrieval
+- Validation & Capacity Checks
+- Modular Service Architecture
 
 ---
 
-## DSA Concepts Used
+# Tech Stack
 
-* Graphs
-* Greedy Algorithms
-* Hash Maps
-* Priority Queues (Optional)
-* Arrays and Vectors
+## Frontend
+- React.js
+- Tailwind CSS
+
+## Backend
+- Node.js
+- Express.js
+
+## Database
+- MySQL
+
+## Allocation Engine
+- C++
 
 ---
 
-## Project Objective
+# Project Structure
 
-To develop an intelligent and efficient examination seating system that automatically allocates students to rooms and seats while satisfying seating constraints and reducing the possibility of cheating.
+```
+project/
+│
+├── frontend/
+│
+├── backend/
+│   ├── src/
+│   │   ├── controllers/
+│   │   ├── services/
+│   │   ├── routes/
+│   │   └── config/
+│   │
+│   ├── database/
+│   │   ├── schema.sql
+│   │   └── sample_data.sql
+│   │
+│   └── API_DOCUMENTATION.md
+│
+├── cpp-engine/
+│   ├── src/
+│   ├── include/
+│   ├── tests/
+│   └── allocator.exe
+│
+└── README.md
+```
 
 ---
 
-## Future Scope
+# Backend Workflow
 
-* Multi-exam scheduling
-* Invigilator allocation
-* QR-based seat lookup
+```
+Database
+      │
+      ▼
+Generate input.json
+      │
+      ▼
+C++ Allocation Engine
+      │
+      ▼
+output.json
+      │
+      ▼
+Store Seat Assignments
+      │
+      ▼
+Frontend Display
+```
+
+---
+
+# Database Tables
+
+- departments
+- students
+- classrooms
+- exams
+- exam_registrations
+- seating_plans
+- seat_assignments
+
+---
+
+# REST APIs
+
+### Students
+
+- Student Management APIs
+
+### Classrooms
+
+- Classroom Management APIs
+
+### Exams
+
+- Exam Management APIs
+
+### Seating
+
+```
+POST /api/seating/generate
+GET  /api/seating/input/:examId
+GET  /api/seating/:examId
+```
+
+---
+
+# Current Progress
+
+## Completed
+
+- Database Design
+- Backend APIs
+- Validation Layer
+- Seating Input Generation
+- Service Layer
+- Seating Retrieval API
+- Sample Dataset
+
+## In Progress
+
+- C++ Engine Integration
+
+## Pending
+
+- Execute allocator.exe
+- Read output.json
+- Store generated seat assignments
+- End-to-End Testing
+
+---
+
+# Team
+
+### Frontend & C++ Allocation Engine
+Person A
+
+### Backend & Integration
+Person B
+
+---
+
+# Future Enhancements
+
+- PDF Seating Reports
+- CSV Export
+- Advanced Constraint-Based Allocation
+- Analytics Dashboard
+- Attendance Integration
 * Real-time hall availability
 * Advanced optimization algorithms
