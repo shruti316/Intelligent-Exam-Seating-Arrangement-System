@@ -1,0 +1,19 @@
+{
+  "students": [
+    { "studentId": 1, "rollNo": "2023CS001", "departmentCode": "CSE", "section": "A" },
+    { "studentId": 2, "rollNo": "2023CS002", "departmentCode": "CSE", "section": "A" },
+    { "studentId": 3, "rollNo": "2023CS003", "departmentCode": "CSE", "section": "A" },
+    { "studentId": 4, "rollNo": "2023CS004", "departmentCode": "CSE", "section": "A" },
+    { "studentId": 5, "rollNo": "2023CS005", "departmentCode": "CSE", "section": "A" },
+    { "studentId": 6, "rollNo": "2023CS006", "departmentCode": "CSE", "section": "A" },
+    { "studentId": 7, "rollNo": "2023IT001", "departmentCode": "IT", "section": "B" },
+    { "studentId": 8, "rollNo": "2023IT002", "departmentCode": "IT", "section": "B" },
+    { "studentId": 9, "rollNo": "2023IT003", "departmentCode": "IT", "section": "B" },
+    { "studentId": 10, "rollNo": "2023IT004", "departmentCode": "IT", "section": "B" },
+    { "studentId": 11, "rollNo": "2023IT005", "departmentCode": "IT", "section": "B" },
+    { "studentId": 12, "rollNo": "2023IT012", "departmentCode": "IT", "section": "B" }
+  ],
+  "rooms": [
+    { "classroomId": 1, "roomNo": "LH101", "rows": 3, "cols": 4 }
+  ]
+}

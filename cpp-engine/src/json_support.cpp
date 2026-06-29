@@ -236,26 +236,29 @@ namespace json
             int code = validationErrorCode(report.error);
 
             std::string jsonStr = "{";
+            jsonStr += "\"success\":false,";
             jsonStr += "\"status\":\"error\",";
-            jsonStr += "\"error\":\"" + escapeString(errStr) + "\",";
+            jsonStr += "\"error\":{";
+            jsonStr += "\"message\":\"" + escapeString(errStr) + "\",";
             jsonStr += "\"code\":" + std::to_string(code);
+            jsonStr += "}";
             jsonStr += "}";
             return jsonStr;
         }
 
         std::string jsonStr = "{";
+        jsonStr += "\"success\":true,";
         jsonStr += "\"status\":\"success\",";
         jsonStr += "\"engineVersion\":\"" + std::string(ENGINE_VERSION) + "\",";
         jsonStr += "\"algorithm\":\"Cooldown + ScoreBased\",";
         jsonStr += "\"traversal\":\"" + Traversal::strategyToString(config.traversal) + "\",";
         jsonStr += "\"generatedAt\":\"" + getISO8601Timestamp() + "\",";
 
-        // Summary
+        // Summary (Removed capacity tracking)
         const auto& stats = report.stats;
         jsonStr += "\"summary\":{";
         jsonStr += "\"totalStudents\":" + std::to_string(stats.totalStudents) + ",";
         jsonStr += "\"totalRooms\":" + std::to_string(stats.totalRooms) + ",";
-        jsonStr += "\"totalCapacity\":" + std::to_string(stats.totalCapacity) + ",";
         jsonStr += "\"occupiedSeats\":" + std::to_string(stats.occupiedSeats) + ",";
         jsonStr += "\"emptySeats\":" + std::to_string(stats.emptySeats) + ",";
         jsonStr += "\"occupancyPercentage\":" + std::to_string(stats.occupancyPercentage) + ",";
@@ -275,7 +278,6 @@ namespace json
             jsonStr += "\"classroomId\":" + std::to_string(rUtil.classroomId) + ",";
             jsonStr += "\"roomNo\":\"" + escapeString(rUtil.roomNo) + "\",";
             jsonStr += "\"occupiedSeats\":" + std::to_string(rUtil.occupiedSeats) + ",";
-            jsonStr += "\"totalCapacity\":" + std::to_string(rUtil.totalCapacity) + ",";
             jsonStr += "\"utilizationPercentage\":" + std::to_string(rUtil.utilizationPercentage) + ",";
             
             // Section Distribution dictionary serialization
@@ -353,7 +355,7 @@ namespace json
             Student s;
             s.studentId = extractIntField(objStr, "studentId");
             s.rollNo = extractStringField(objStr, "rollNo");
-            s.department = extractStringField(objStr, "department");
+            s.department = extractStringField(objStr, "departmentCode");
             s.section = extractStringField(objStr, "section");
             students.push_back(s);
         }
@@ -372,3 +374,4 @@ namespace json
         }
     }
 }
+

@@ -1,0 +1,6 @@
+{
+  "students": [],
+  "rooms": [
+    { "classroomId": 1, "roomNo": "LH101", "rows": 5, "cols": 5 }
+  ]
+}

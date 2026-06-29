@@ -1,0 +1,48 @@
+{
+  "students": [
+    { "studentId": 1, "rollNo": "2023CS001", "departmentCode": "CSE", "section": "A" },
+    { "studentId": 2, "rollNo": "2023CS002", "departmentCode": "CSE", "section": "A" },
+    { "studentId": 3, "rollNo": "2023CS003", "departmentCode": "CSE", "section": "A" },
+    { "studentId": 4, "rollNo": "2023CS004", "departmentCode": "CSE", "section": "A" },
+    { "studentId": 5, "rollNo": "2023CS005", "departmentCode": "CSE", "section": "A" },
+    { "studentId": 6, "rollNo": "2023CS006", "departmentCode": "CSE", "section": "A" },
+    { "studentId": 7, "rollNo": "2023CS007", "departmentCode": "CSE", "section": "A" },
+    { "studentId": 8, "rollNo": "2023CS008", "departmentCode": "CSE", "section": "A" },
+    { "studentId": 9, "rollNo": "2023CS009", "departmentCode": "CSE", "section": "A" },
+    { "studentId": 10, "rollNo": "2023CS010", "departmentCode": "CSE", "section": "A" },
+    { "studentId": 11, "rollNo": "2023CS011", "departmentCode": "CSE", "section": "A" },
+    { "studentId": 12, "rollNo": "2023CS012", "departmentCode": "CSE", "section": "A" },
+    { "studentId": 13, "rollNo": "2023CS013", "departmentCode": "CSE", "section": "A" },
+    { "studentId": 14, "rollNo": "2023CS014", "departmentCode": "CSE", "section": "A" },
+    { "studentId": 15, "rollNo": "2023CS015", "departmentCode": "CSE", "section": "A" },
+    { "studentId": 16, "rollNo": "2023CS016", "departmentCode": "CSE", "section": "A" },
+    { "studentId": 17, "rollNo": "2023CS017", "departmentCode": "CSE", "section": "A" },
+    { "studentId": 18, "rollNo": "2023CS018", "departmentCode": "CSE", "section": "A" },
+    { "studentId": 19, "rollNo": "2023CS019", "departmentCode": "CSE", "section": "A" },
+    { "studentId": 20, "rollNo": "2023CS020", "departmentCode": "CSE", "section": "A" },
+    { "studentId": 21, "rollNo": "2023CS021", "departmentCode": "CSE", "section": "A" },
+    { "studentId": 22, "rollNo": "2023CS022", "departmentCode": "CSE", "section": "A" },
+    { "studentId": 23, "rollNo": "2023CS023", "departmentCode": "CSE", "section": "A" },
+    { "studentId": 24, "rollNo": "2023CS024", "departmentCode": "CSE", "section": "A" },
+    { "studentId": 25, "rollNo": "2023CS025", "departmentCode": "CSE", "section": "A" },
+    { "studentId": 26, "rollNo": "2023CS026", "departmentCode": "CSE", "section": "A" },
+    { "studentId": 27, "rollNo": "2023CS027", "departmentCode": "CSE", "section": "A" },
+    { "studentId": 28, "rollNo": "2023CS028", "departmentCode": "CSE", "section": "A" },
+    { "studentId": 29, "rollNo": "2023CS029", "departmentCode": "CSE", "section": "A" },
+    { "studentId": 30, "rollNo": "2023CS030", "departmentCode": "CSE", "section": "A" },
+    { "studentId": 31, "rollNo": "2023CS031", "departmentCode": "CSE", "section": "A" },
+    { "studentId": 32, "rollNo": "2023CS032", "departmentCode": "CSE", "section": "A" },
+    { "studentId": 33, "rollNo": "2023CS033", "departmentCode": "CSE", "section": "A" },
+    { "studentId": 34, "rollNo": "2023CS034", "departmentCode": "CSE", "section": "A" },
+    { "studentId": 35, "rollNo": "2023CS035", "departmentCode": "CSE", "section": "A" },
+    { "studentId": 36, "rollNo": "2023CS036", "departmentCode": "CSE", "section": "A" },
+    { "studentId": 37, "rollNo": "2023CS037", "departmentCode": "CSE", "section": "A" },
+    { "studentId": 38, "rollNo": "2023CS038", "departmentCode": "CSE", "section": "A" },
+    { "studentId": 39, "rollNo": "2023CS039", "departmentCode": "CSE", "section": "A" },
+    { "studentId": 40, "rollNo": "2023CS040", "departmentCode": "CSE", "section": "A" }
+  ],
+  "rooms": [
+    { "classroomId": 1, "roomNo": "LH101", "rows": 6, "cols": 8 }
+  ]
+}
+

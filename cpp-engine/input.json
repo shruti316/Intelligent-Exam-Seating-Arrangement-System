@@ -1,0 +1,37 @@
+{
+  "students": [
+    {
+      "studentId": 1,
+      "rollNo": "2023CS001",
+      "departmentCode": "CSE",
+      "section": "A"
+    },
+    {
+      "studentId": 2,
+      "rollNo": "2023CS002",
+      "departmentCode": "CSE",
+      "section": "A"
+    },
+    {
+      "studentId": 3,
+      "rollNo": "2023IT001",
+      "departmentCode": "IT",
+      "section": "B"
+    },
+    {
+      "studentId": 4,
+      "rollNo": "2023IT002",
+      "departmentCode": "IT",
+      "section": "B"
+    }
+  ],
+
+  "rooms": [
+    {
+      "classroomId": 1,
+      "roomNo": "LH101",
+      "rows": 2,
+      "cols": 2
+    }
+  ]
+}
