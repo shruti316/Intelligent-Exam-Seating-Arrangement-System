@@ -1,0 +1,1117 @@
+{
+  "examId": 1,
+  "students": [
+    {
+      "studentId": 1,
+      "rollNo": "23BCS001",
+      "department": "CSE",
+      "section": "A"
+    },
+    {
+      "studentId": 2,
+      "rollNo": "23BCS002",
+      "department": "IT",
+      "section": "B"
+    },
+    {
+      "studentId": 3,
+      "rollNo": "23BCS003",
+      "department": "ECE",
+      "section": "C"
+    },
+    {
+      "studentId": 4,
+      "rollNo": "23BCS004",
+      "department": "ME",
+      "section": "D"
+    },
+    {
+      "studentId": 5,
+      "rollNo": "23BCS005",
+      "department": "CSE",
+      "section": "A"
+    },
+    {
+      "studentId": 6,
+      "rollNo": "23BCS006",
+      "department": "IT",
+      "section": "B"
+    },
+    {
+      "studentId": 7,
+      "rollNo": "23BCS007",
+      "department": "ECE",
+      "section": "C"
+    },
+    {
+      "studentId": 8,
+      "rollNo": "23BCS008",
+      "department": "ME",
+      "section": "D"
+    },
+    {
+      "studentId": 9,
+      "rollNo": "23BCS009",
+      "department": "CSE",
+      "section": "A"
+    },
+    {
+      "studentId": 10,
+      "rollNo": "23BCS010",
+      "department": "IT",
+      "section": "B"
+    },
+    {
+      "studentId": 11,
+      "rollNo": "23BCS011",
+      "department": "ECE",
+      "section": "C"
+    },
+    {
+      "studentId": 12,
+      "rollNo": "23BCS012",
+      "department": "ME",
+      "section": "D"
+    },
+    {
+      "studentId": 13,
+      "rollNo": "23BCS013",
+      "department": "CSE",
+      "section": "A"
+    },
+    {
+      "studentId": 14,
+      "rollNo": "23BCS014",
+      "department": "IT",
+      "section": "B"
+    },
+    {
+      "studentId": 15,
+      "rollNo": "23BCS015",
+      "department": "ECE",
+      "section": "C"
+    },
+    {
+      "studentId": 16,
+      "rollNo": "23BCS016",
+      "department": "ME",
+      "section": "D"
+    },
+    {
+      "studentId": 17,
+      "rollNo": "23BCS017",
+      "department": "CSE",
+      "section": "A"
+    },
+    {
+      "studentId": 18,
+      "rollNo": "23BCS018",
+      "department": "IT",
+      "section": "B"
+    },
+    {
+      "studentId": 19,
+      "rollNo": "23BCS019",
+      "department": "ECE",
+      "section": "C"
+    },
+    {
+      "studentId": 20,
+      "rollNo": "23BCS020",
+      "department": "ME",
+      "section": "D"
+    },
+    {
+      "studentId": 21,
+      "rollNo": "23BCS021",
+      "department": "CSE",
+      "section": "A"
+    },
+    {
+      "studentId": 22,
+      "rollNo": "23BCS022",
+      "department": "IT",
+      "section": "B"
+    },
+    {
+      "studentId": 23,
+      "rollNo": "23BCS023",
+      "department": "ECE",
+      "section": "C"
+    },
+    {
+      "studentId": 24,
+      "rollNo": "23BCS024",
+      "department": "ME",
+      "section": "D"
+    },
+    {
+      "studentId": 25,
+      "rollNo": "23BCS025",
+      "department": "CSE",
+      "section": "A"
+    },
+    {
+      "studentId": 26,
+      "rollNo": "23BCS026",
+      "department": "IT",
+      "section": "B"
+    },
+    {
+      "studentId": 27,
+      "rollNo": "23BCS027",
+      "department": "ECE",
+      "section": "C"
+    },
+    {
+      "studentId": 28,
+      "rollNo": "23BCS028",
+      "department": "ME",
+      "section": "D"
+    },
+    {
+      "studentId": 29,
+      "rollNo": "23BCS029",
+      "department": "CSE",
+      "section": "A"
+    },
+    {
+      "studentId": 30,
+      "rollNo": "23BCS030",
+      "department": "IT",
+      "section": "B"
+    },
+    {
+      "studentId": 31,
+      "rollNo": "23BCS031",
+      "department": "ECE",
+      "section": "C"
+    },
+    {
+      "studentId": 32,
+      "rollNo": "23BCS032",
+      "department": "ME",
+      "section": "D"
+    },
+    {
+      "studentId": 33,
+      "rollNo": "23BCS033",
+      "department": "CSE",
+      "section": "A"
+    },
+    {
+      "studentId": 34,
+      "rollNo": "23BCS034",
+      "department": "IT",
+      "section": "B"
+    },
+    {
+      "studentId": 35,
+      "rollNo": "23BCS035",
+      "department": "ECE",
+      "section": "C"
+    },
+    {
+      "studentId": 36,
+      "rollNo": "23BCS036",
+      "department": "ME",
+      "section": "D"
+    },
+    {
+      "studentId": 37,
+      "rollNo": "23BCS037",
+      "department": "CSE",
+      "section": "A"
+    },
+    {
+      "studentId": 38,
+      "rollNo": "23BCS038",
+      "department": "IT",
+      "section": "B"
+    },
+    {
+      "studentId": 39,
+      "rollNo": "23BCS039",
+      "department": "ECE",
+      "section": "C"
+    },
+    {
+      "studentId": 40,
+      "rollNo": "23BCS040",
+      "department": "ME",
+      "section": "D"
+    },
+    {
+      "studentId": 41,
+      "rollNo": "23BCS041",
+      "department": "CSE",
+      "section": "A"
+    },
+    {
+      "studentId": 42,
+      "rollNo": "23BCS042",
+      "department": "IT",
+      "section": "B"
+    },
+    {
+      "studentId": 43,
+      "rollNo": "23BCS043",
+      "department": "ECE",
+      "section": "C"
+    },
+    {
+      "studentId": 44,
+      "rollNo": "23BCS044",
+      "department": "ME",
+      "section": "D"
+    },
+    {
+      "studentId": 45,
+      "rollNo": "23BCS045",
+      "department": "CSE",
+      "section": "A"
+    },
+    {
+      "studentId": 46,
+      "rollNo": "23BCS046",
+      "department": "IT",
+      "section": "B"
+    },
+    {
+      "studentId": 47,
+      "rollNo": "23BCS047",
+      "department": "ECE",
+      "section": "C"
+    },
+    {
+      "studentId": 48,
+      "rollNo": "23BCS048",
+      "department": "ME",
+      "section": "D"
+    },
+    {
+      "studentId": 49,
+      "rollNo": "23BCS049",
+      "department": "CSE",
+      "section": "A"
+    },
+    {
+      "studentId": 50,
+      "rollNo": "23BCS050",
+      "department": "IT",
+      "section": "B"
+    },
+    {
+      "studentId": 51,
+      "rollNo": "23BCS051",
+      "department": "ECE",
+      "section": "C"
+    },
+    {
+      "studentId": 52,
+      "rollNo": "23BCS052",
+      "department": "ME",
+      "section": "D"
+    },
+    {
+      "studentId": 53,
+      "rollNo": "23BCS053",
+      "department": "CSE",
+      "section": "A"
+    },
+    {
+      "studentId": 54,
+      "rollNo": "23BCS054",
+      "department": "IT",
+      "section": "B"
+    },
+    {
+      "studentId": 55,
+      "rollNo": "23BCS055",
+      "department": "ECE",
+      "section": "C"
+    },
+    {
+      "studentId": 56,
+      "rollNo": "23BCS056",
+      "department": "ME",
+      "section": "D"
+    },
+    {
+      "studentId": 57,
+      "rollNo": "23BCS057",
+      "department": "CSE",
+      "section": "A"
+    },
+    {
+      "studentId": 58,
+      "rollNo": "23BCS058",
+      "department": "IT",
+      "section": "B"
+    },
+    {
+      "studentId": 59,
+      "rollNo": "23BCS059",
+      "department": "ECE",
+      "section": "C"
+    },
+    {
+      "studentId": 60,
+      "rollNo": "23BCS060",
+      "department": "ME",
+      "section": "D"
+    },
+    {
+      "studentId": 61,
+      "rollNo": "23BCS061",
+      "department": "CSE",
+      "section": "A"
+    },
+    {
+      "studentId": 62,
+      "rollNo": "23BCS062",
+      "department": "IT",
+      "section": "B"
+    },
+    {
+      "studentId": 63,
+      "rollNo": "23BCS063",
+      "department": "ECE",
+      "section": "C"
+    },
+    {
+      "studentId": 64,
+      "rollNo": "23BCS064",
+      "department": "ME",
+      "section": "D"
+    },
+    {
+      "studentId": 65,
+      "rollNo": "23BCS065",
+      "department": "CSE",
+      "section": "A"
+    },
+    {
+      "studentId": 66,
+      "rollNo": "23BCS066",
+      "department": "IT",
+      "section": "B"
+    },
+    {
+      "studentId": 67,
+      "rollNo": "23BCS067",
+      "department": "ECE",
+      "section": "C"
+    },
+    {
+      "studentId": 68,
+      "rollNo": "23BCS068",
+      "department": "ME",
+      "section": "D"
+    },
+    {
+      "studentId": 69,
+      "rollNo": "23BCS069",
+      "department": "CSE",
+      "section": "A"
+    },
+    {
+      "studentId": 70,
+      "rollNo": "23BCS070",
+      "department": "IT",
+      "section": "B"
+    },
+    {
+      "studentId": 71,
+      "rollNo": "23BCS071",
+      "department": "ECE",
+      "section": "C"
+    },
+    {
+      "studentId": 72,
+      "rollNo": "23BCS072",
+      "department": "ME",
+      "section": "D"
+    },
+    {
+      "studentId": 73,
+      "rollNo": "23BCS073",
+      "department": "CSE",
+      "section": "A"
+    },
+    {
+      "studentId": 74,
+      "rollNo": "23BCS074",
+      "department": "IT",
+      "section": "B"
+    },
+    {
+      "studentId": 75,
+      "rollNo": "23BCS075",
+      "department": "ECE",
+      "section": "C"
+    },
+    {
+      "studentId": 76,
+      "rollNo": "23BCS076",
+      "department": "ME",
+      "section": "D"
+    },
+    {
+      "studentId": 77,
+      "rollNo": "23BCS077",
+      "department": "CSE",
+      "section": "A"
+    },
+    {
+      "studentId": 78,
+      "rollNo": "23BCS078",
+      "department": "IT",
+      "section": "B"
+    },
+    {
+      "studentId": 79,
+      "rollNo": "23BCS079",
+      "department": "ECE",
+      "section": "C"
+    },
+    {
+      "studentId": 80,
+      "rollNo": "23BCS080",
+      "department": "ME",
+      "section": "D"
+    },
+    {
+      "studentId": 81,
+      "rollNo": "23BCS081",
+      "department": "CSE",
+      "section": "A"
+    },
+    {
+      "studentId": 82,
+      "rollNo": "23BCS082",
+      "department": "IT",
+      "section": "B"
+    },
+    {
+      "studentId": 83,
+      "rollNo": "23BCS083",
+      "department": "ECE",
+      "section": "C"
+    },
+    {
+      "studentId": 84,
+      "rollNo": "23BCS084",
+      "department": "ME",
+      "section": "D"
+    },
+    {
+      "studentId": 85,
+      "rollNo": "23BCS085",
+      "department": "CSE",
+      "section": "A"
+    },
+    {
+      "studentId": 86,
+      "rollNo": "23BCS086",
+      "department": "IT",
+      "section": "B"
+    },
+    {
+      "studentId": 87,
+      "rollNo": "23BCS087",
+      "department": "ECE",
+      "section": "C"
+    },
+    {
+      "studentId": 88,
+      "rollNo": "23BCS088",
+      "department": "ME",
+      "section": "D"
+    },
+    {
+      "studentId": 89,
+      "rollNo": "23BCS089",
+      "department": "CSE",
+      "section": "A"
+    },
+    {
+      "studentId": 90,
+      "rollNo": "23BCS090",
+      "department": "IT",
+      "section": "B"
+    },
+    {
+      "studentId": 91,
+      "rollNo": "23BCS091",
+      "department": "ECE",
+      "section": "C"
+    },
+    {
+      "studentId": 92,
+      "rollNo": "23BCS092",
+      "department": "ME",
+      "section": "D"
+    },
+    {
+      "studentId": 93,
+      "rollNo": "23BCS093",
+      "department": "CSE",
+      "section": "A"
+    },
+    {
+      "studentId": 94,
+      "rollNo": "23BCS094",
+      "department": "IT",
+      "section": "B"
+    },
+    {
+      "studentId": 95,
+      "rollNo": "23BCS095",
+      "department": "ECE",
+      "section": "C"
+    },
+    {
+      "studentId": 96,
+      "rollNo": "23BCS096",
+      "department": "ME",
+      "section": "D"
+    },
+    {
+      "studentId": 97,
+      "rollNo": "23BCS097",
+      "department": "CSE",
+      "section": "A"
+    },
+    {
+      "studentId": 98,
+      "rollNo": "23BCS098",
+      "department": "IT",
+      "section": "B"
+    },
+    {
+      "studentId": 99,
+      "rollNo": "23BCS099",
+      "department": "ECE",
+      "section": "C"
+    },
+    {
+      "studentId": 100,
+      "rollNo": "23BCS100",
+      "department": "ME",
+      "section": "D"
+    },
+    {
+      "studentId": 101,
+      "rollNo": "23BCS101",
+      "department": "CSE",
+      "section": "A"
+    },
+    {
+      "studentId": 102,
+      "rollNo": "23BCS102",
+      "department": "IT",
+      "section": "B"
+    },
+    {
+      "studentId": 103,
+      "rollNo": "23BCS103",
+      "department": "ECE",
+      "section": "C"
+    },
+    {
+      "studentId": 104,
+      "rollNo": "23BCS104",
+      "department": "ME",
+      "section": "D"
+    },
+    {
+      "studentId": 105,
+      "rollNo": "23BCS105",
+      "department": "CSE",
+      "section": "A"
+    },
+    {
+      "studentId": 106,
+      "rollNo": "23BCS106",
+      "department": "IT",
+      "section": "B"
+    },
+    {
+      "studentId": 107,
+      "rollNo": "23BCS107",
+      "department": "ECE",
+      "section": "C"
+    },
+    {
+      "studentId": 108,
+      "rollNo": "23BCS108",
+      "department": "ME",
+      "section": "D"
+    },
+    {
+      "studentId": 109,
+      "rollNo": "23BCS109",
+      "department": "CSE",
+      "section": "A"
+    },
+    {
+      "studentId": 110,
+      "rollNo": "23BCS110",
+      "department": "IT",
+      "section": "B"
+    },
+    {
+      "studentId": 111,
+      "rollNo": "23BCS111",
+      "department": "ECE",
+      "section": "C"
+    },
+    {
+      "studentId": 112,
+      "rollNo": "23BCS112",
+      "department": "ME",
+      "section": "D"
+    },
+    {
+      "studentId": 113,
+      "rollNo": "23BCS113",
+      "department": "CSE",
+      "section": "A"
+    },
+    {
+      "studentId": 114,
+      "rollNo": "23BCS114",
+      "department": "IT",
+      "section": "B"
+    },
+    {
+      "studentId": 115,
+      "rollNo": "23BCS115",
+      "department": "ECE",
+      "section": "C"
+    },
+    {
+      "studentId": 116,
+      "rollNo": "23BCS116",
+      "department": "ME",
+      "section": "D"
+    },
+    {
+      "studentId": 117,
+      "rollNo": "23BCS117",
+      "department": "CSE",
+      "section": "A"
+    },
+    {
+      "studentId": 118,
+      "rollNo": "23BCS118",
+      "department": "IT",
+      "section": "B"
+    },
+    {
+      "studentId": 119,
+      "rollNo": "23BCS119",
+      "department": "ECE",
+      "section": "C"
+    },
+    {
+      "studentId": 120,
+      "rollNo": "23BCS120",
+      "department": "ME",
+      "section": "D"
+    },
+    {
+      "studentId": 121,
+      "rollNo": "23BCS121",
+      "department": "CSE",
+      "section": "A"
+    },
+    {
+      "studentId": 122,
+      "rollNo": "23BCS122",
+      "department": "IT",
+      "section": "B"
+    },
+    {
+      "studentId": 123,
+      "rollNo": "23BCS123",
+      "department": "ECE",
+      "section": "C"
+    },
+    {
+      "studentId": 124,
+      "rollNo": "23BCS124",
+      "department": "ME",
+      "section": "D"
+    },
+    {
+      "studentId": 125,
+      "rollNo": "23BCS125",
+      "department": "CSE",
+      "section": "A"
+    },
+    {
+      "studentId": 126,
+      "rollNo": "23BCS126",
+      "department": "IT",
+      "section": "B"
+    },
+    {
+      "studentId": 127,
+      "rollNo": "23BCS127",
+      "department": "ECE",
+      "section": "C"
+    },
+    {
+      "studentId": 128,
+      "rollNo": "23BCS128",
+      "department": "ME",
+      "section": "D"
+    },
+    {
+      "studentId": 129,
+      "rollNo": "23BCS129",
+      "department": "CSE",
+      "section": "A"
+    },
+    {
+      "studentId": 130,
+      "rollNo": "23BCS130",
+      "department": "IT",
+      "section": "B"
+    },
+    {
+      "studentId": 131,
+      "rollNo": "23BCS131",
+      "department": "ECE",
+      "section": "C"
+    },
+    {
+      "studentId": 132,
+      "rollNo": "23BCS132",
+      "department": "ME",
+      "section": "D"
+    },
+    {
+      "studentId": 133,
+      "rollNo": "23BCS133",
+      "department": "CSE",
+      "section": "A"
+    },
+    {
+      "studentId": 134,
+      "rollNo": "23BCS134",
+      "department": "IT",
+      "section": "B"
+    },
+    {
+      "studentId": 135,
+      "rollNo": "23BCS135",
+      "department": "ECE",
+      "section": "C"
+    },
+    {
+      "studentId": 136,
+      "rollNo": "23BCS136",
+      "department": "ME",
+      "section": "D"
+    },
+    {
+      "studentId": 137,
+      "rollNo": "23BCS137",
+      "department": "CSE",
+      "section": "A"
+    },
+    {
+      "studentId": 138,
+      "rollNo": "23BCS138",
+      "department": "IT",
+      "section": "B"
+    },
+    {
+      "studentId": 139,
+      "rollNo": "23BCS139",
+      "department": "ECE",
+      "section": "C"
+    },
+    {
+      "studentId": 140,
+      "rollNo": "23BCS140",
+      "department": "ME",
+      "section": "D"
+    },
+    {
+      "studentId": 141,
+      "rollNo": "23BCS141",
+      "department": "CSE",
+      "section": "A"
+    },
+    {
+      "studentId": 142,
+      "rollNo": "23BCS142",
+      "department": "IT",
+      "section": "B"
+    },
+    {
+      "studentId": 143,
+      "rollNo": "23BCS143",
+      "department": "ECE",
+      "section": "C"
+    },
+    {
+      "studentId": 144,
+      "rollNo": "23BCS144",
+      "department": "ME",
+      "section": "D"
+    },
+    {
+      "studentId": 145,
+      "rollNo": "23BCS145",
+      "department": "CSE",
+      "section": "A"
+    },
+    {
+      "studentId": 146,
+      "rollNo": "23BCS146",
+      "department": "IT",
+      "section": "B"
+    },
+    {
+      "studentId": 147,
+      "rollNo": "23BCS147",
+      "department": "ECE",
+      "section": "C"
+    },
+    {
+      "studentId": 148,
+      "rollNo": "23BCS148",
+      "department": "ME",
+      "section": "D"
+    },
+    {
+      "studentId": 149,
+      "rollNo": "23BCS149",
+      "department": "CSE",
+      "section": "A"
+    },
+    {
+      "studentId": 150,
+      "rollNo": "23BCS150",
+      "department": "IT",
+      "section": "B"
+    },
+    {
+      "studentId": 151,
+      "rollNo": "23BCS151",
+      "department": "ECE",
+      "section": "C"
+    },
+    {
+      "studentId": 152,
+      "rollNo": "23BCS152",
+      "department": "ME",
+      "section": "D"
+    },
+    {
+      "studentId": 153,
+      "rollNo": "23BCS153",
+      "department": "CSE",
+      "section": "A"
+    },
+    {
+      "studentId": 154,
+      "rollNo": "23BCS154",
+      "department": "IT",
+      "section": "B"
+    },
+    {
+      "studentId": 155,
+      "rollNo": "23BCS155",
+      "department": "ECE",
+      "section": "C"
+    },
+    {
+      "studentId": 156,
+      "rollNo": "23BCS156",
+      "department": "ME",
+      "section": "D"
+    },
+    {
+      "studentId": 157,
+      "rollNo": "23BCS157",
+      "department": "CSE",
+      "section": "A"
+    },
+    {
+      "studentId": 158,
+      "rollNo": "23BCS158",
+      "department": "IT",
+      "section": "B"
+    },
+    {
+      "studentId": 159,
+      "rollNo": "23BCS159",
+      "department": "ECE",
+      "section": "C"
+    },
+    {
+      "studentId": 160,
+      "rollNo": "23BCS160",
+      "department": "ME",
+      "section": "D"
+    },
+    {
+      "studentId": 161,
+      "rollNo": "23BCS161",
+      "department": "CSE",
+      "section": "A"
+    },
+    {
+      "studentId": 162,
+      "rollNo": "23BCS162",
+      "department": "IT",
+      "section": "B"
+    },
+    {
+      "studentId": 163,
+      "rollNo": "23BCS163",
+      "department": "ECE",
+      "section": "C"
+    },
+    {
+      "studentId": 164,
+      "rollNo": "23BCS164",
+      "department": "ME",
+      "section": "D"
+    },
+    {
+      "studentId": 165,
+      "rollNo": "23BCS165",
+      "department": "CSE",
+      "section": "A"
+    },
+    {
+      "studentId": 166,
+      "rollNo": "23BCS166",
+      "department": "IT",
+      "section": "B"
+    },
+    {
+      "studentId": 167,
+      "rollNo": "23BCS167",
+      "department": "ECE",
+      "section": "C"
+    },
+    {
+      "studentId": 168,
+      "rollNo": "23BCS168",
+      "department": "ME",
+      "section": "D"
+    },
+    {
+      "studentId": 169,
+      "rollNo": "23BCS169",
+      "department": "CSE",
+      "section": "A"
+    },
+    {
+      "studentId": 170,
+      "rollNo": "23BCS170",
+      "department": "IT",
+      "section": "B"
+    },
+    {
+      "studentId": 171,
+      "rollNo": "23BCS171",
+      "department": "ECE",
+      "section": "C"
+    },
+    {
+      "studentId": 172,
+      "rollNo": "23BCS172",
+      "department": "ME",
+      "section": "D"
+    },
+    {
+      "studentId": 173,
+      "rollNo": "23BCS173",
+      "department": "CSE",
+      "section": "A"
+    },
+    {
+      "studentId": 174,
+      "rollNo": "23BCS174",
+      "department": "IT",
+      "section": "B"
+    },
+    {
+      "studentId": 175,
+      "rollNo": "23BCS175",
+      "department": "ECE",
+      "section": "C"
+    },
+    {
+      "studentId": 176,
+      "rollNo": "23BCS176",
+      "department": "ME",
+      "section": "D"
+    },
+    {
+      "studentId": 177,
+      "rollNo": "23BCS177",
+      "department": "CSE",
+      "section": "A"
+    },
+    {
+      "studentId": 178,
+      "rollNo": "23BCS178",
+      "department": "IT",
+      "section": "B"
+    },
+    {
+      "studentId": 179,
+      "rollNo": "23BCS179",
+      "department": "ECE",
+      "section": "C"
+    },
+    {
+      "studentId": 180,
+      "rollNo": "23BCS180",
+      "department": "ME",
+      "section": "D"
+    }
+  ],
+  "rooms": [
+    {
+      "classroomId": 1,
+      "roomNo": "LH101",
+      "rows": 5,
+      "cols": 10
+    },
+    {
+      "classroomId": 2,
+      "roomNo": "LH102",
+      "rows": 6,
+      "cols": 8
+    },
+    {
+      "classroomId": 3,
+      "roomNo": "LH103",
+      "rows": 4,
+      "cols": 10
+    },
+    {
+      "classroomId": 4,
+      "roomNo": "LH104",
+      "rows": 7,
+      "cols": 8
+    },
+    {
+      "classroomId": 5,
+      "roomNo": "LH105",
+      "rows": 5,
+      "cols": 12
+    }
+  ]
+}
