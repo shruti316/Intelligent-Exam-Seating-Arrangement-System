@@ -22,8 +22,11 @@ export default {
       },
 
       boxShadow: {
-        soft: "0 8px 25px rgba(0,0,0,0.06)",
-        float: "0 15px 40px rgba(0,0,0,0.08)",
+        soft: "0 8px 25px rgba(0,0,0,.06)",
+        float: "0 15px 40px rgba(0,0,0,.08)",
+
+        card: "0 10px 30px rgba(34,34,34,.05)",
+        hover: "0 18px 45px rgba(34,34,34,.08)",
       },
     },
   },

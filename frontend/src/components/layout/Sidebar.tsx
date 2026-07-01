@@ -38,21 +38,26 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
           isOpen ? 'translate-x-0' : '-translate-x-full'
         } lg:translate-x-0 lg:static`}
       >
-        <div className="flex items-center justify-between h-20 px-6">
-          <div className="flex items-center gap-3">
-            <div className="bg-[#EBCFD2] p-2 rounded-lg text-[#222222]">
+      <div className="flex items-center justify-center h-20 mt-[20px]">
+          <div className="flex items-center gap-5">
+            <div className=" p-2 text-[#222222] flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-[#F1DDD8] to-[#E8ECE8] shadow-soft">
               <Sparkles size={20} />
             </div>
-            <div className="font-['Cormorant_Garamond',serif]">
-              <h1 className="text-lg font-bold leading-none text-[#222222]">Exam</h1>
-              <h1 className="text-lg font-bold leading-none text-[#222222]">Seating</h1>
-              <p className="text-[10px] text-[#666666] tracking-wider uppercase mt-0.5">Intelligent Allocation</p>
-            </div>
+              <div className="font-['Cormorant_Garamond',serif]">
+                <h1 className="text-3xl font-bold leading-none text-[#2D2825]">
+                  SeatFlow
+                </h1>
+                <p className="mt-2 text-[11px] uppercase tracking-[0.28em] text-[#9B9087]">
+                  Intelligent Allocation
+                </p>
+              </div>
           </div>
           <button onClick={onClose} className="lg:hidden p-2 text-[#666666]">
             <X size={20} />
           </button>
         </div>
+
+        <div className="my-6 h-px bg-[#ECE4DD]" />
 
         <nav className="flex-1 px-4 py-6 space-y-2">
           {menuItems.map((item) => (
@@ -74,10 +79,11 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
           ))}
         </nav>
 
-        <div className="px-6 py-6 border-t border-[#E7DDD5] text-[11px] text-[#666666]">
-          <p className="font-semibold">Allocation Engine</p>
-          <p>Version 1.0</p>
-        </div>
+        <div className="flex items-center px-5 gap-2"> 
+          <div className="h-2.5 w-2.5 rounded-full bg-emerald-500 animate-pulse"/> 
+            <p className="font-medium"> Engine Online </p>
+          </div>
+              <p className="mt-2 text-[#9B9087] px-8"> Version 1.0.0 </p>
       </aside>
     </>
   );

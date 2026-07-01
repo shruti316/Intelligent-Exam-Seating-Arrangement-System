@@ -38,7 +38,7 @@ const PageHeader: React.FC<PageHeaderProps> = ({
           </span>
         )}
 
-        <h1 className="mt-4 font-cormorant text-[56px] leading-none text-[#2D2825]">
+        <h1 className="mt-4 font-cormorant text-[40px] leading-none text-[#2D2825]">
           {title}
         </h1>
 

@@ -73,7 +73,7 @@ const StatCard: React.FC<StatCardProps> = ({
 
           </p>
 
-          <h2 className="mt-4 font-cormorant text-5xl text-[#2D2825]">
+          <h2 className="mt-4 font-cormorant text-[54px] text-[#2D2825]">
 
             {value}
 
