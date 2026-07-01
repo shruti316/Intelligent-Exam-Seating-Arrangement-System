@@ -1,13 +1,14 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import {
-  HiOutlineViewGrid,
-  HiOutlineUserGroup,
-  HiOutlineAcademicCap,
-  HiOutlineCalendar,
-  HiOutlineTable,
-  HiX
-} from 'react-icons/hi';
+  LayoutDashboard,
+  Users,
+  School,
+  CalendarDays,
+  Armchair,
+  Sparkles,
+  X
+} from 'lucide-react';
 
 interface SidebarProps {
   isOpen: boolean;
@@ -16,69 +17,70 @@ interface SidebarProps {
 
 export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
   const menuItems = [
-    { name: 'Dashboard', path: '/', icon: HiOutlineViewGrid },
-    { name: 'Students', path: '/students', icon: HiOutlineUserGroup },
-    { name: 'Classrooms', path: '/classrooms', icon: HiOutlineAcademicCap },
-    { name: 'Exams', path: '/exams', icon: HiOutlineCalendar },
-    { name: 'Seating Plan', path: '/seating', icon: HiOutlineTable },
+    { name: 'Dashboard', path: '/', icon: LayoutDashboard },
+    { name: 'Students', path: '/students', icon: Users },
+    { name: 'Classrooms', path: '/classrooms', icon: School },
+    { name: 'Exams', path: '/exams', icon: CalendarDays },
+    { name: 'Seating Plan', path: '/seating', icon: Armchair },
   ];
 
   return (
     <>
-      {/* Mobile backdrop overlay */}
       {isOpen && (
         <div
           onClick={onClose}
-          className="fixed inset-0 z-20 bg-gray-900 bg-opacity-50 lg:hidden"
+          className="fixed inset-0 z-20 bg-black/20 lg:hidden"
         />
       )}
 
-      {/* Sidebar container */}
       <aside
-        className={`fixed top-0 bottom-0 left-0 z-30 flex flex-col w-64 bg-indigo-900 text-white transition-transform duration-200 transform border-r border-indigo-800 ${
+        className={`fixed top-0 bottom-0 left-0 z-30 flex flex-col w-72 bg-[#F7F4EF] transition-transform duration-300 ease-in-out border-r border-[#E7DDD5] ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
-        } lg:translate-x-0 lg:static lg:h-screen`}
+        } lg:translate-x-0 lg:static`}
       >
-        <div className="flex items-center justify-between h-16 px-6 border-b border-indigo-800">
-          <div className="text-lg font-bold tracking-wider text-white">
-            Seatflow Admin
+        <div className="flex items-center justify-between h-20 px-6">
+          <div className="flex items-center gap-3">
+            <div className="bg-[#EBCFD2] p-2 rounded-lg text-[#222222]">
+              <Sparkles size={20} />
+            </div>
+            <div className="font-['Cormorant_Garamond',serif]">
+              <h1 className="text-lg font-bold leading-none text-[#222222]">Exam</h1>
+              <h1 className="text-lg font-bold leading-none text-[#222222]">Seating</h1>
+              <p className="text-[10px] text-[#666666] tracking-wider uppercase mt-0.5">Intelligent Allocation</p>
+            </div>
           </div>
-          <button
-            onClick={onClose}
-            type="button"
-            className="p-1 text-indigo-200 rounded lg:hidden hover:text-white hover:bg-indigo-800 focus:outline-none"
-            aria-label="Close menu"
-          >
-            <HiX className="w-6 h-6" />
+          <button onClick={onClose} className="lg:hidden p-2 text-[#666666]">
+            <X size={20} />
           </button>
         </div>
 
-        <nav className="flex-1 px-4 py-6 space-y-1">
+        <nav className="flex-1 px-4 py-6 space-y-2">
           {menuItems.map((item) => (
             <NavLink
               key={item.path}
               to={item.path}
               onClick={onClose}
               className={({ isActive }) =>
-                `flex items-center gap-3 px-4 py-2.5 text-sm font-medium rounded transition-colors duration-150 ${
+                `flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-2xl transition-all duration-200 ${
                   isActive
-                    ? 'bg-indigo-800 text-white border-l-4 border-indigo-400 -ml-1'
-                    : 'text-indigo-200 hover:text-white hover:bg-indigo-800'
+                    ? 'bg-white text-[#222222] shadow-sm border border-[#E7DDD5] font-semibold'
+                    : 'text-[#666666] hover:bg-white hover:shadow-sm hover:-translate-y-[1px]'
                 }`
               }
             >
-              <item.icon className="w-5 h-5 flex-shrink-0" />
+              <item.icon size={18} />
               {item.name}
             </NavLink>
           ))}
         </nav>
 
-        <div className="px-6 py-4 border-t border-indigo-800 text-xs text-indigo-300">
-          <div>Allocation Engine v1.0.0</div>
-          <div>React + C++ Bridge</div>
+        <div className="px-6 py-6 border-t border-[#E7DDD5] text-[11px] text-[#666666]">
+          <p className="font-semibold">Allocation Engine</p>
+          <p>Version 1.0</p>
         </div>
       </aside>
     </>
   );
 };
-export default Sidebar;
+
+export default Sidebar; 

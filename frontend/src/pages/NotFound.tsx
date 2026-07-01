@@ -37,7 +37,7 @@ export const NotFound: React.FC = () => {
 
       <Link
         to="/"
-        className="inline-flex items-center gap-2 px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg text-sm shadow-md transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+        className="inline-flex items-center gap-2 px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg text-sm shadow-soft transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
       >
         <HiOutlineArrowLeft className="w-4 h-4" />
         Back to Dashboard

@@ -1,0 +1,75 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+
+background:#FAF8F5;
+
+color:#222;
+
+font-family:'Manrope',sans-serif;
+
+-webkit-font-smoothing:antialiased;
+
+text-rendering:optimizeLegibility;
+
+}
+
+button{
+
+    font-family:inherit;
+}
+
+input{
+
+    font-family:inherit;
+}
+
+h1,h2,h3{
+
+font-family:'Cormorant Garamond',serif;
+
+}
+
+
+
+:root{
+
+--bg:#FAF8F5;
+
+--surface:#FFFFFF;
+
+--sidebar:#EEF2F3;
+
+--border:#E8E3DD;
+
+--text:#222;
+
+--muted:#666;
+
+--rose:#EBCFD2;
+
+--sage:#D6DECE;
+
+--blue:#C7D7E1;
+
+--beige:#DDD0C3;
+
+--radius:22px;
+
+--transition:.25s ease;
+
+}
+
+::selection{
+
+background:#EBCFD2;
+
+}

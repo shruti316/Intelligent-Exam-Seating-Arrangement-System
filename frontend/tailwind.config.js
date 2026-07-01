@@ -20,6 +20,11 @@ export default {
           900: '#312e81',
         },
       },
+
+      boxShadow: {
+        soft: "0 8px 25px rgba(0,0,0,0.06)",
+        float: "0 15px 40px rgba(0,0,0,0.08)",
+      },
     },
   },
   plugins: [],

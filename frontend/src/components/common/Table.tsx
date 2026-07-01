@@ -1,71 +1,127 @@
-import React from 'react';
+import React from "react";
+import clsx from "clsx";
 
-export interface Column<T> {
+interface Column<T> {
+  key: keyof T | string;
   header: string;
-  accessor: keyof T | ((row: T) => React.ReactNode);
-  className?: string;
+  width?: string;
+  align?: "left" | "center" | "right";
+  render?: (row: T) => React.ReactNode;
 }
 
 interface TableProps<T> {
   columns: Column<T>[];
   data: T[];
   emptyMessage?: string;
-  rowKey: (row: T) => string | number;
+  className?: string;
 }
 
-export function Table<T>({
+function Table<T extends Record<string, any>>({
   columns,
   data,
-  emptyMessage = 'No records found.',
-  rowKey
+  emptyMessage = "No records found.",
+  className,
 }: TableProps<T>) {
   return (
-    <div className="overflow-x-auto border border-gray-200 rounded-lg">
-      <table className="min-w-full divide-y divide-gray-200">
-        <thead className="bg-gray-50">
-          <tr>
-            {columns.map((column, index) => (
-              <th
-                key={index}
-                scope="col"
-                className={`px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider ${column.className || ''}`}
-              >
-                {column.header}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody className="bg-white divide-y divide-gray-200 text-sm text-gray-700">
-          {data.length === 0 ? (
-            <tr>
-              <td colSpan={columns.length} className="px-6 py-10 text-center text-gray-500">
-                {emptyMessage}
-              </td>
-            </tr>
-          ) : (
-            data.map((row) => (
-              <tr key={rowKey(row)} className="hover:bg-gray-50">
-                {columns.map((column, colIndex) => {
-                  const content =
-                    typeof column.accessor === 'function'
-                      ? column.accessor(row)
-                      : (row[column.accessor] as React.ReactNode);
+    <div
+      className={clsx(
+        "overflow-hidden rounded-[26px] border border-[#E8DFD8] bg-white",
+        className
+      )}
+    >
+      <div className="overflow-x-auto">
 
-                  return (
-                    <td
-                      key={colIndex}
-                      className={`px-6 py-4 whitespace-nowrap ${column.className || ''}`}
-                    >
-                      {content}
-                    </td>
-                  );
-                })}
+        <table className="min-w-full">
+
+          <thead>
+
+            <tr className="bg-[#F8F5F2]">
+
+              {columns.map((column) => (
+
+                <th
+                  key={String(column.key)}
+                  className={clsx(
+                    "px-8 py-5 text-xs uppercase tracking-[0.16em] text-[#8C837D] font-semibold",
+
+                    column.align === "center" && "text-center",
+
+                    column.align === "right" && "text-right",
+
+                    (!column.align || column.align === "left") && "text-left"
+                  )}
+                  style={{
+                    width: column.width,
+                  }}
+                >
+                  {column.header}
+                </th>
+
+              ))}
+
+            </tr>
+
+          </thead>
+
+          <tbody>
+
+            {data.length === 0 ? (
+
+              <tr>
+
+                <td
+                  colSpan={columns.length}
+                  className="py-20 text-center text-[#8A827B]"
+                >
+                  {emptyMessage}
+                </td>
+
               </tr>
-            ))
-          )}
-        </tbody>
-      </table>
+
+            ) : (
+
+              data.map((row, index) => (
+
+                <tr
+                  key={index}
+                  className="border-t border-[#F2ECE8] transition-all duration-200 hover:bg-[#FCFAF8]"
+                >
+
+                  {columns.map((column) => (
+
+                    <td
+                      key={String(column.key)}
+                      className={clsx(
+                        "px-8 py-6 text-[15px] text-[#413B37]",
+
+                        column.align === "center" && "text-center",
+
+                        column.align === "right" && "text-right",
+
+                        (!column.align || column.align === "left") && "text-left"
+                      )}
+                    >
+                      {column.render
+                        ? column.render(row)
+                        : row[column.key as keyof T]}
+                    </td>
+
+                  ))}
+
+                </tr>
+
+              ))
+
+            )}
+
+          </tbody>
+
+        </table>
+
+      </div>
+
     </div>
   );
 }
-export default Table;
+
+export default Table; 

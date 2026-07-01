@@ -1,37 +1,77 @@
-import type { Student } from '../types/Student';
+import api from "./api";
+import type { Student } from "../types/Student";
 
-export const mockStudents: Student[] = [
-  { id: 1, rollNo: 'CS2023001', name: 'Aarav Sharma', department: 'Computer Science', section: 'A', semester: 4 },
-  { id: 2, rollNo: 'CS2023002', name: 'Aditi Verma', department: 'Computer Science', section: 'A', semester: 4 },
-  { id: 3, rollNo: 'EE2023015', name: 'Karan Malhotra', department: 'Electrical Engineering', section: 'B', semester: 6 },
-  { id: 4, rollNo: 'EC2023042', name: 'Riya Sen', department: 'Electronics & Communication', section: 'A', semester: 4 },
-  { id: 5, rollNo: 'ME2023089', name: 'Rohan Das', department: 'Mechanical Engineering', section: 'C', semester: 8 },
-  { id: 6, rollNo: 'CS2023005', name: 'Sneha Reddy', department: 'Computer Science', section: 'B', semester: 4 },
-  { id: 7, rollNo: 'EE2023018', name: 'Vikram Singh', department: 'Electrical Engineering', section: 'A', semester: 6 },
-];
+interface BackendStudent {
+    student_id: number;
+    roll_no: string;
+    first_name: string;
+    last_name: string;
+    department_id: number;
+    department_name: string;
+    department_code: string;
+    home_zone: string;
+    section: string;
+    semester: number;
+}
 
-export const studentService = {
-  async getStudents(): Promise<Student[]> {
-    // Future integration code:
-    // const response = await api.get<Student[]>('/students');
-    // return response.data;
-    return Promise.resolve(mockStudents);
-  },
+interface CreateStudentRequest {
+    roll_no: string;
+    first_name: string;
+    last_name: string;
+    department_id: number;
+    section: string;
+    semester: number;
+}
 
-  async uploadCSV(file: File): Promise<{ success: boolean; message: string }> {
-    // Future integration code:
-    // const formData = new FormData();
-    // formData.append('file', file);
-    // const response = await api.post('/students/upload', formData, {
-    //   headers: { 'Content-Type': 'multipart/form-data' }
-    // });
-    // return response.data;
-    console.log('API trigger: CSV Upload file ->', file.name);
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve({ success: true, message: `Successfully imported CSV roster: ${file.name}` });
-      }, 500);
-    });
-  }
+const mapStudent = (student: BackendStudent): Student => ({
+    id: student.student_id,
+    rollNo: student.roll_no,
+    name: `${student.first_name} ${student.last_name}`.trim(),
+    department: student.department_name,
+    section: student.section,
+    semester: student.semester,
+});
+
+const studentService = {
+    async getStudents(): Promise<Student[]> {
+        const response = await api.get<BackendStudent[]>("/students/details");
+
+        return response.data.map(mapStudent);
+    },
+
+    async getStudentById(id: number): Promise<Student> {
+        const response = await api.get<BackendStudent>(`/students/${id}`);
+
+        return mapStudent(response.data);
+    },
+
+    async createStudent(
+        student: CreateStudentRequest
+    ): Promise<void> {
+        await api.post("/students", student);
+    },
+
+    async updateStudent(
+        id: number,
+        student: CreateStudentRequest
+    ): Promise<void> {
+        await api.put(`/students/${id}`, student);
+    },
+
+    async deleteStudent(id: number): Promise<void> {
+        await api.delete(`/students/${id}`);
+    },
+
+    async uploadCSV(file: File): Promise<void> {
+        const formData = new FormData();
+        formData.append("file", file);
+
+        await api.post("/students/upload", formData, {
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+        });
+    },
 };
-export default studentService;
+
+export default studentService; 

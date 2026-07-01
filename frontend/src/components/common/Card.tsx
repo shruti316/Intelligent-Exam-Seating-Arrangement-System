@@ -1,28 +1,68 @@
-import React from 'react';
+import React from "react";
+import clsx from "clsx";
 
 interface CardProps {
-  title?: string;
   children: React.ReactNode;
+
+  title?: string;
+  subtitle?: string;
+
+  actions?: React.ReactNode;
+
   className?: string;
-  headerActions?: React.ReactNode;
+
+  hover?: boolean;
+
+  hero?: boolean;
 }
 
-export const Card: React.FC<CardProps> = ({
-  title,
+const Card: React.FC<CardProps> = ({
   children,
-  className = '',
-  headerActions
+  title,
+  subtitle,
+  actions,
+  className,
+  hover = true,
+  hero = false,
 }) => {
   return (
-    <div className={`bg-white border border-gray-200 rounded-lg shadow-sm ${className}`}>
-      {(title || headerActions) && (
-        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200">
-          {title && <h3 className="text-base font-semibold text-gray-900">{title}</h3>}
-          {headerActions && <div>{headerActions}</div>}
+    <div
+      className={clsx(
+        "overflow-hidden rounded-[28px] border transition-all duration-300",
+
+        hero
+          ? "border-[#E5D8CD] bg-white shadow-lg"
+          : "border-[#ECE4DD] bg-white shadow-sm",
+
+        hover &&
+          "hover:-translate-y-1 hover:shadow-xl hover:border-[#D9C8BC]",
+
+        className
+      )}
+    >
+      {(title || subtitle || actions) && (
+        <div className="flex items-start justify-between px-8 pt-7 pb-5">
+          <div>
+            {title && (
+              <h2 className="font-cormorant text-[34px] leading-none text-[#2C2623]">
+                {title}
+              </h2>
+            )}
+
+            {subtitle && (
+              <p className="mt-2 text-sm leading-6 text-[#7B746F] max-w-xl">
+                {subtitle}
+              </p>
+            )}
+          </div>
+
+          {actions && <div>{actions}</div>}
         </div>
       )}
-      <div className="px-6 py-4">{children}</div>
+
+      <div className="px-8 pb-8">{children}</div>
     </div>
   );
 };
+
 export default Card;

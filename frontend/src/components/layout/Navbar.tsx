@@ -1,36 +1,43 @@
 import React from 'react';
-import { HiMenuAlt2 } from 'react-icons/hi';
+import { Menu, Search } from 'lucide-react';
 
 interface NavbarProps {
-  title: string;
   onMenuToggle: () => void;
 }
 
-export const Navbar: React.FC<NavbarProps> = ({ title, onMenuToggle }) => {
+export const Navbar: React.FC<NavbarProps> = ({ onMenuToggle }) => {
   const currentDate = new Date().toLocaleDateString('en-US', {
-    weekday: 'short',
-    year: 'numeric',
-    month: 'short',
+    weekday: 'long',
+    month: 'long',
     day: 'numeric',
   });
 
   return (
-    <header className="sticky top-0 z-10 flex items-center justify-between h-16 px-4 bg-white border-b border-gray-200 lg:px-6">
-      <div className="flex items-center gap-3">
+    <header className="sticky top-0 z-10 flex items-center justify-between h-20 xl:px-14 2xl:px-16 bg-[#FAF8F5]">
+      <div>
+        <h2 className="text-2xl font-['Cormorant_Garamond',serif] font-bold text-[#222222]">
+          Good Morning,
+        </h2>
+        <p className="text-sm text-[#666666]">Your academic schedule at a glance.</p>
+      </div>
+
+      <div className="flex items-center gap-6">
+        <div className="text-sm font-medium text-[#666666] hidden md:block">
+          {currentDate}
+        </div>
+        <button className="p-2 text-[#666666] hover:bg-white rounded-full transition-colors">
+          <Search size={20} />
+        </button>
+        <div className="w-8 h-8 rounded-full bg-[#EBCFD2] border border-[#E7DDD5]" />
         <button
           onClick={onMenuToggle}
-          type="button"
-          className="p-2 text-gray-500 rounded lg:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-          aria-label="Toggle menu"
+          className="lg:hidden p-2 text-[#222222]"
         >
-          <HiMenuAlt2 className="w-6 h-6" />
+          <Menu size={24} />
         </button>
-        <h1 className="text-xl font-bold text-gray-900">{title}</h1>
-      </div>
-      <div className="text-sm font-medium text-gray-500">
-        {currentDate}
       </div>
     </header>
   );
 };
-export default Navbar;
+
+export default Navbar; 
