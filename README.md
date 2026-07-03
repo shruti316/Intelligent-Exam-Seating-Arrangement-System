@@ -1,172 +1,169 @@
 # Intelligent Exam Seating Arrangement System
 
-An AI-assisted Exam Seating Arrangement System that automatically generates optimized seating plans using a C++ allocation engine, a Node.js backend, MySQL database, and React frontend.
+An optimized, full-stack application designed to automate and manage candidate seating layout plans for university examinations. The core layout computation is offloaded to a high-speed, constraint-based C++ engine, with a Node.js/Express middleware layer, a relational MySQL persistence store, and a beautiful React.js single-page application dashboard.
 
 ---
 
-# Features
+## 🚀 Key Features
 
-- Student Management
-- Classroom Management
-- Exam Management
-- Automated Seating Generation
-- JSON-based C++ Integration
-- RESTful APIs
-- Seating Plan Retrieval
-- Validation & Capacity Checks
-- Modular Service Architecture
+* **Live Analytics Dashboard**: Consolidated statistics showing total candidates, classroom sizes, scheduled assessments, room capacity utilization rates, and detailed allocation engine metrics (execution times, proximity conflicts).
+* **Interactive 2D Spatial Layout Grid**: True-to-life visualization of classroom desk grids (Rows × Columns) color-coded by student departments, displaying empty desks, inspected tooltips, and scale zoom controls.
+* **Full CRUD Management**: Fully validated interfaces for registering students (including bulk CSV uploads with name parsing), creating exam sessions, and configuring classroom capacities.
+* **Intelligent Optimization Algorithm**: CLI integration with a high-performance C++ executable running constraint-solving optimization models.
+* **Data Portability & Reports**: Export complete seating arrangements as raw CSV tables, serialized JSON logs, or generate printer-friendly physical seating charts.
 
 ---
 
-# Tech Stack
+## 🛠 Tech Stack
 
-## Frontend
-- React.js
-- Tailwind CSS
-
-## Backend
-- Node.js
-- Express.js
-
-## Database
-- MySQL
-
-## Allocation Engine
-- C++
+* **Frontend**: React.js, TypeScript, Vite, Tailwind CSS, Lucide icons
+* **Backend**: Node.js, Express.js, MySQL, Multer (multipart imports)
+* **Allocation Engine**: C++ executable (`allocator.exe`) running local processes
 
 ---
 
-# Project Structure
+## 📂 Project Architecture
 
 ```
-project/
-│
-├── frontend/
-│
-├── backend/
+├── frontend/                     # React Single Page Application
 │   ├── src/
-│   │   ├── controllers/
-│   │   ├── services/
-│   │   ├── routes/
-│   │   └── config/
-│   │
+│   │   ├── components/           # Common layouts, Table, Card, Page Header
+│   │   ├── pages/                # Dashboard, Students, Classrooms, Exams, SeatingPlan
+│   │   ├── services/             # Axios API clients (seating, students, classrooms, exams)
+│   │   └── types/                # TypeScript interface mappings
+│   └── package.json
+│
+├── backend/                      # Node.js REST API Server
+│   ├── src/
+│   │   ├── controllers/          # Request handlers & logic pipelines
+│   │   ├── routes/               # Express endpoint definitions
+│   │   ├── services/             # C++ child_process exec & MySQL transaction handlers
+│   │   └── config/               # Database pool connectivity configuration
 │   ├── database/
-│   │   ├── schema.sql
-│   │   └── sample_data.sql
-│   │
-│   └── API_DOCUMENTATION.md
+│   │   ├── schema.sql            # Table structures, constraints & relationships
+│   │   └── sample_data.sql       # Mock records for immediate sandbox testing
+│   ├── server.js                 # App server registration and initialization
+│   └── package.json
 │
-├── cpp-engine/
-│   ├── src/
-│   ├── include/
-│   ├── tests/
-│   └── allocator.exe
-│
-└── README.md
+└── cpp-engine/                   # Constraint Solver Engine
+    ├── src/                      # Source files
+    └── allocator.exe             # High-speed executable binaries
 ```
 
 ---
 
-# Backend Workflow
+## 🔄 Allocation Execution Pipeline
 
-```
-Database
-      │
-      ▼
-Generate input.json
-      │
-      ▼
-C++ Allocation Engine
-      │
-      ▼
-output.json
-      │
-      ▼
-Store Seat Assignments
-      │
-      ▼
-Frontend Display
+```mermaid
+graph TD
+    A[Frontend Action: Click Generate] --> B[POST /api/seating/generate]
+    B --> C[Fetch Exam Registrations & Room Capacities]
+    C --> D[Write Temporary input_examId.json]
+    D --> E[child_process.spawn C++ Allocator]
+    E --> F[allocator.exe input.json output.json strategy]
+    F --> G[Read output.json & capture stderr]
+    G --> H[Run MySQL Transaction]
+    H --> I[Delete old plans/assignments -> Bulk INSERT new records]
+    I --> J[Clean up Temporary JSON files]
+    J --> K[Return JSON payload to React App]
+    K --> L[Render 2D Grid Room Blueprint]
 ```
 
 ---
 
-# Database Tables
+## 💾 Relational Database Schema
 
-- departments
-- students
-- classrooms
-- exams
-- exam_registrations
-- seating_plans
-- seat_assignments
+The database utilizes relational integrity constraints (`ON DELETE CASCADE`) to synchronize seating plans:
 
----
-
-# REST APIs
-
-### Students
-
-- Student Management APIs
-
-### Classrooms
-
-- Classroom Management APIs
-
-### Exams
-
-- Exam Management APIs
-
-### Seating
-
-```
-POST /api/seating/generate
-GET  /api/seating/input/:examId
-GET  /api/seating/:examId
+```mermaid
+erDiagram
+    DEPARTMENTS ||--o{ STUDENTS : "belongs to"
+    STUDENTS ||--o{ EXAMS : "registers for"
+    SEATING_PLANS ||--o{ SEAT_ASSIGNMENTS : "contains"
+    CLASSROOMS ||--o{ SEAT_ASSIGNMENTS : "hosts"
+    STUDENTS ||--o{ SEAT_ASSIGNMENTS : "assigned to"
+    EXAMS ||--o{ SEATING_PLANS : "triggers"
 ```
 
----
-
-# Current Progress
-
-## Completed
-
-- Database Design
-- Backend APIs
-- Validation Layer
-- Seating Input Generation
-- Service Layer
-- Seating Retrieval API
-- Sample Dataset
-
-## In Progress
-
-- C++ Engine Integration
-
-## Pending
-
-- Execute allocator.exe
-- Read output.json
-- Store generated seat assignments
-- End-to-End Testing
+### Table Schema Definitions
+1. **`departments`**: Code and name definitions of academic divisions.
+2. **`students`**: Personal details, roll numbers, sections, and semesters.
+3. **`classrooms`**: Venue records containing coordinate layouts (Rows × Columns) and maximum seat capacities.
+4. **`exams`**: Academic schedules, subject codes, dates, times, and computed durations.
+5. **`seating_plans`**: Parent plan logs summarizing allocator statistics (e.g. `total_students`, `occupied_seats`, `conflict_count`, `execution_time_ms`).
+6. **`seat_assignments`**: Direct junction table binding a student to a room row-column coordinate seat. Includes a unique key constraint on `(plan_id, student_id)` and `(plan_id, classroom_id, row_no, col_no)` to prevent overlapping seats.
 
 ---
 
-# Team
+## 🌐 API Specifications
 
-### Frontend & C++ Allocation Engine
-Person A
+### 📊 Dashboard
+* `GET /api/dashboard/stats`: Aggregates records, capacity utilization, and latest seating plans metrics.
 
-### Backend & Integration
-Person B
+### 🎓 Students
+* `GET /api/students`: Lists all active student directory records.
+* `POST /api/students`: Registers a new student.
+* `PUT /api/students/:id`: Updates student details.
+* `DELETE /api/students/:id`: Removes student profile.
+* `POST /api/students/upload`: Parses raw student lists from CSV formats.
+
+### 🏫 Classrooms
+* `GET /api/classrooms`: Lists configured halls.
+* `POST /api/classrooms`: Adds new classrooms layout.
+* `PUT /api/classrooms/:id`: Modifies classroom dimensions.
+* `DELETE /api/classrooms/:id`: Removes classroom.
+
+### 📅 Exams
+* `GET /api/exams`: Lists scheduling cards.
+* `POST /api/exams`: Registers assessment timetables.
+* `PUT /api/exams/:id`: Modifies scheduling card details.
+* `DELETE /api/exams/:id`: Deletes exam schedule.
+
+### 💺 Seating
+* `POST /api/seating/generate`: Triggers C++ allocator for an exam, writing results inside database transactions.
+* `GET /api/seating/:examId`: Retrieves the current seating layout plan.
 
 ---
 
-# Future Enhancements
+## ⚙️ Setup and Installation
 
-- PDF Seating Reports
-- CSV Export
-- Advanced Constraint-Based Allocation
-- Analytics Dashboard
-- Attendance Integration
-* Real-time hall availability
-* Advanced optimization algorithms
+### 1. Database Configuration
+1. Initialize a MySQL server instance.
+2. Run database structure scripts:
+   ```bash
+   mysql -u [user] -p[password] < backend/database/schema.sql
+   mysql -u [user] -p[password] < backend/database/sample_data.sql
+   ```
+3. Create `backend/.env` file and supply connection variables:
+   ```env
+   DB_HOST=localhost
+   DB_USER=root
+   DB_PASSWORD=your_password
+   DB_NAME=exam_seating_db
+   PORT=5000
+   ```
+
+### 2. Run Backend Server
+```bash
+cd backend
+npm install
+npm start
+```
+
+### 3. Run Frontend Application
+```bash
+cd frontend
+npm install
+npm run dev
+```
+Open [http://localhost:5173](http://localhost:5173) in your browser.
+
+---
+
+## 🧪 E2E Verification
+You can run automated test scripts to verify the C++ child process execution and MySQL integrations:
+```bash
+cd backend
+npm test
+```
+The test suite validates mock JSON generation, exit codes execution, database transactions rollback logic, and schema constraints.
