@@ -81,7 +81,8 @@ const createExam = (req, res) => {
             }
 
             res.status(201).json({
-                message: "Exam created successfully"
+                message: "Exam created successfully",
+                examId: result.insertId
             });
         }
     );

@@ -1,106 +1,68 @@
+import api from './api';
 import type { AllocationResult } from '../types/AllocationResult';
 import type { SeatAssignment } from '../types/SeatAssignment';
-import studentService from './studentService';
-import classroomService from './classroomService';
-
-export const mockAllocationResults: Record<number, AllocationResult> = {};
 
 export const allocationService = {
   async generateSeatingPlan(examId: number, classroomIds: number[]): Promise<AllocationResult> {
-    // Future integration code:
-    // const response = await api.post<AllocationResult>('/allocation/generate', { examId, classroomIds });
-    // return response.data;
-    
-    console.log(`API Trigger: Generating plan for exam ID ${examId} in classrooms ${classroomIds}`);
-    
-    const students = await studentService.getStudents();
-    const allClassrooms = await classroomService.getClassrooms();
-    const selectedClassrooms = allClassrooms.filter((c) => classroomIds.includes(c.id));
+    const response = await api.post<{ success: boolean; message: string; data: any }>('/seating/generate', { 
+      examId, 
+      classroomIds 
+    });
 
-    if (selectedClassrooms.length === 0) {
+    if (!response.data.success) {
       return {
         examId,
         generatedAt: new Date().toISOString(),
         success: false,
-        message: 'No classrooms selected for allocation.',
+        message: response.data.message || 'Unable to generate seating plan.',
         assignments: [],
       };
     }
 
-    // Interleave students by department to satisfy adjacent seating constraints
-    const deptGroups: Record<string, typeof students> = {};
-    students.forEach((student) => {
-      if (!deptGroups[student.department]) {
-        deptGroups[student.department] = [];
-      }
-      deptGroups[student.department].push(student);
-    });
-
-    const interleavedStudents: typeof students = [];
-    const depts = Object.keys(deptGroups);
-    let hasMore = true;
-    let index = 0;
-
-    while (hasMore) {
-      hasMore = false;
-      for (const dept of depts) {
-        if (index < deptGroups[dept].length) {
-          interleavedStudents.push(deptGroups[dept][index]);
-          hasMore = true;
-        }
-      }
-      index++;
+    const details = await this.getGeneratedPlans(examId);
+    if (!details) {
+      return {
+        examId,
+        generatedAt: new Date().toISOString(),
+        success: false,
+        message: 'Plan generated but details could not be retrieved.',
+        assignments: [],
+      };
     }
 
-    // Assign seats in row-major order across chosen rooms
-    const assignments: SeatAssignment[] = [];
-    let studentIdx = 0;
-
-    for (const room of selectedClassrooms) {
-      if (studentIdx >= interleavedStudents.length) break;
-
-      for (let r = 1; r <= room.rows; r++) {
-        if (studentIdx >= interleavedStudents.length) break;
-        for (let c = 1; c <= room.cols; c++) {
-          if (studentIdx >= interleavedStudents.length) break;
-
-          const student = interleavedStudents[studentIdx++];
-          assignments.push({
-            rollNo: student.rollNo,
-            roomNo: room.roomNo,
-            seatNo: `R${r}-C${c}`,
-          });
-        }
-      }
-    }
-
-    const mockResult: AllocationResult = {
+    return {
       examId,
-      generatedAt: new Date().toISOString(),
+      generatedAt: details.generatedAt,
       success: true,
-      message: `Seating layout successfully generated using the C++ Allocation Engine (Dynamic Mock). Seated ${assignments.length} out of ${students.length} students across ${selectedClassrooms.length} rooms.`,
-      assignments,
+      message: 'Seating plan generated successfully.',
+      assignments: details.assignments,
     };
-
-    // Save in cache
-    mockAllocationResults[examId] = mockResult;
-
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(mockResult);
-      }, 1200); // 1.2s delay to simulate engine computational execution
-    });
   },
 
   async getGeneratedPlans(examId: number): Promise<AllocationResult | null> {
-    // Future integration code:
-    // const response = await api.get<AllocationResult>(`/allocation/exam/${examId}`);
-    // return response.data;
-    
-    if (mockAllocationResults[examId]) {
-      return Promise.resolve(mockAllocationResults[examId]);
+    try {
+      const response = await api.get<{ success: boolean; data: any[] }>(`/seating/${examId}`);
+      if (!response.data.success || !response.data.data || response.data.data.length === 0) {
+        return null;
+      }
+
+      const list = response.data.data;
+      const assignments: SeatAssignment[] = list.map((item: any) => ({
+        rollNo: item.roll_no,
+        roomNo: item.room_no,
+        seatNo: item.seat_label,
+      }));
+
+      return {
+        examId,
+        generatedAt: list[0].generated_at || new Date().toISOString(),
+        success: true,
+        assignments,
+      };
+    } catch (error) {
+      console.error('Error fetching plan:', error);
+      return null;
     }
-    return Promise.resolve(null);
   }
 };
 

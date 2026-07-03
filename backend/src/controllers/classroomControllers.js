@@ -49,7 +49,8 @@ const createClassroom = (req, res) => {
                 return res.status(500).json(err);
             }
             res.status(201).json({
-                message: "Classroom added successfully"
+                message: "Classroom added successfully",
+                classroomId: result.insertId
             });
         }
     );
