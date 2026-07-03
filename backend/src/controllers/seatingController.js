@@ -27,7 +27,7 @@ const generateSeating = async (req, res) => {
 
     try {
 
-        const { examId } = req.body;
+        const { examId, classroomIds } = req.body;
 
         if (!examId) {
             return res.status(400).json({
@@ -36,11 +36,11 @@ const generateSeating = async (req, res) => {
             });
         }
 
-        const data = await seatingService.generateSeating(examId);
+        const data = await seatingService.generateSeating(examId, classroomIds);
 
         res.status(200).json({
             success: true,
-            message: "Input JSON generated successfully.",
+            message: "Seating plan generated successfully.",
             data
         });
 
