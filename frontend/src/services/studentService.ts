@@ -62,15 +62,16 @@ const studentService = {
         await api.delete(`/students/${id}`);
     },
 
-    async uploadCSV(file: File): Promise<void> {
+    async uploadCSV(file: File): Promise<{ message: string }> {
         const formData = new FormData();
         formData.append("file", file);
 
-        await api.post("/students/upload", formData, {
+        const response = await api.post<{ message: string }>("/students/upload", formData, {
             headers: {
                 "Content-Type": "multipart/form-data",
             },
         });
+        return response.data;
     },
 };
 
