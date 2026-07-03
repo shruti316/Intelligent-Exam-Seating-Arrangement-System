@@ -1,8 +1,8 @@
 import React from "react";
 import clsx from "clsx";
 
-interface Column<T> {
-  key: keyof T | string;
+export interface Column<T> {
+  key: string;
   header: string;
   width?: string;
   align?: "left" | "center" | "right";

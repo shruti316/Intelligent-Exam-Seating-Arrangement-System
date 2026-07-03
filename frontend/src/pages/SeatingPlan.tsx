@@ -7,8 +7,7 @@ import type { Exam } from '../types/Exam';
 import type { Classroom } from '../types/Classroom';
 import type { Student } from '../types/Student';
 import type { AllocationResult } from '../types/AllocationResult';
-import Button from '../components/common/Button';
-import Card from '../components/common/Card';
+
 import {
   Search,
   Download,
@@ -192,12 +191,40 @@ export const SeatingPlan: React.FC = () => {
     }, 4000);
   };
 
-  const handleExport = (type: "CSV" | "PDF") => {
+  const downloadJSON = () => {
     if (!allocationResult) return;
-    triggerToast(`Exporting matrix configuration structural layout as ${type}...`, "info");
-    setTimeout(() => {
-      triggerToast(`${type} matrix summary downloaded successfully.`, "success");
-    }, 1500);
+    const blob = new Blob([JSON.stringify(allocationResult, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `seating_plan_exam_${selectedExamId}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+    triggerToast("JSON seating plan downloaded successfully.", "success");
+  };
+
+  const downloadCSV = () => {
+    if (!allocationResult) return;
+    let csvContent = "Roll Number,Name,Department,Section,Room,Seat No\n";
+    allocationResult.assignments.forEach(a => {
+      const student = studentMap[a.rollNo];
+      const name = student ? student.name : '';
+      const dept = student ? student.department : '';
+      const sec = student ? student.section : '';
+      csvContent += `"${a.rollNo}","${name}","${dept}","${sec}","${a.roomNo}","${a.seatNo}"\n`;
+    });
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `seating_plan_exam_${selectedExamId}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+    triggerToast("CSV seating plan exported successfully.", "success");
+  };
+
+  const handlePrint = () => {
+    window.print();
   };
 
   const toggleSort = (field: 'seat' | 'name' | 'rollNo') => {
@@ -634,16 +661,25 @@ export const SeatingPlan: React.FC = () => {
 
                     {/* Export Formats */}
                     <button 
-                      onClick={() => handleExport("CSV")} 
+                      onClick={downloadCSV} 
                       className="flex items-center gap-1.5 rounded-xl border border-[#E7DDD5] bg-white px-3 py-2 text-xs font-semibold text-[#222222] transition hover:bg-[#FAF8F5]"
+                      title="Export CSV Seating Layout"
                     >
-                      <Download size={13} /> <span className="hidden sm:inline">CSV</span>
+                      <Download size={13} /> <span className="hidden sm:inline">Export CSV</span>
                     </button>
                     <button 
-                      onClick={() => handleExport("PDF")} 
-                      className="flex items-center gap-1.5 rounded-xl border border-[#E7DDD5] bg-[#FAF8F5] px-3 py-2 text-xs font-semibold text-[#222222] transition hover:bg-[#E7DDD5]"
+                      onClick={downloadJSON} 
+                      className="flex items-center gap-1.5 rounded-xl border border-[#E7DDD5] bg-white px-3 py-2 text-xs font-semibold text-[#222222] transition hover:bg-[#FAF8F5]"
+                      title="Download JSON Seating Layout"
                     >
-                      <Download size={13} /> <span className="hidden sm:inline">PDF</span>
+                      <Download size={13} /> <span className="hidden sm:inline">Download JSON</span>
+                    </button>
+                    <button 
+                      onClick={handlePrint} 
+                      className="flex items-center gap-1.5 rounded-xl border border-[#E7DDD5] bg-[#FAF8F5] px-3 py-2 text-xs font-semibold text-[#222222] transition hover:bg-[#E7DDD5]"
+                      title="Print Seating Layout"
+                    >
+                      <List size={13} /> <span className="hidden sm:inline">Print Layout</span>
                     </button>
                   </div>
                 </div>
@@ -760,7 +796,7 @@ export const SeatingPlan: React.FC = () => {
                                   const assignment = getAssignmentAt(r, c);
                                   const candidate = assignment ? studentMap[assignment.rollNo] : null;
 
-                                  if (candidate) {
+                                  if (assignment && candidate) {
                                     const matched = checkIsMatch(candidate.rollNo);
                                     const isInspected = selectedStudentSeat?.student.rollNo === candidate.rollNo;
 

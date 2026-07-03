@@ -48,3 +48,48 @@ input{
 input::placeholder{
     color:#A49B94;
 } 
+
+@media print {
+  header, 
+  nav, 
+  aside,
+  button,
+  .lg\:col-span-4,
+  .fixed,
+  .print-hidden {
+    display: none !important;
+  }
+
+  body, 
+  html, 
+  main, 
+  #root {
+    background: white !important;
+    color: black !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .lg\:col-span-8 {
+    width: 100% !important;
+    display: block !important;
+  }
+
+  .overflow-auto {
+    overflow: visible !important;
+    border: none !important;
+    padding: 0 !important;
+  }
+  
+  .overflow-auto > div {
+    transform: none !important;
+    width: 100% !important;
+  }
+
+  .rounded-3xl, .rounded-2xl {
+    border-radius: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+  }
+}
