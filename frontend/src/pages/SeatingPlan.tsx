@@ -25,7 +25,10 @@ import {
   SlidersHorizontal,
   ArrowUpDown,
   CheckCircle2,
-  HelpCircle
+  HelpCircle,
+  ZoomIn,
+  ZoomOut,
+  Maximize2
 } from "lucide-react";
 
 interface StudentLookupMap {
@@ -61,6 +64,7 @@ export const SeatingPlan: React.FC = () => {
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [toastType, setToastType] = useState<'success' | 'error' | 'info'>('success');
   const [showConsoleHelp, setShowConsoleHelp] = useState<boolean>(false);
+  const [zoomLevel, setZoomLevel] = useState<number>(1);
 
   // --- Initial Data Loading ---
   useEffect(() => {
@@ -580,6 +584,36 @@ export const SeatingPlan: React.FC = () => {
                       </select>
                     </div>
 
+                    {/* Zoom Controls */}
+                    {viewMode === 'grid' && (
+                      <div className="flex items-center gap-0.5 rounded-xl border border-[#E7DDD5] p-0.5 bg-[#FAF8F5]">
+                        <button
+                          onClick={() => setZoomLevel(prev => Math.max(prev - 0.1, 0.6))}
+                          className="p-1.5 rounded-lg text-[#666666] hover:text-[#222222] hover:bg-white hover:shadow-xs transition-all"
+                          title="Zoom Out"
+                        >
+                          <ZoomOut size={13} />
+                        </button>
+                        <span className="text-[10px] font-bold font-mono text-[#666666] px-1.5 select-none min-w-[34px] text-center">
+                          {Math.round(zoomLevel * 100)}%
+                        </span>
+                        <button
+                          onClick={() => setZoomLevel(prev => Math.min(prev + 0.1, 1.4))}
+                          className="p-1.5 rounded-lg text-[#666666] hover:text-[#222222] hover:bg-white hover:shadow-xs transition-all"
+                          title="Zoom In"
+                        >
+                          <ZoomIn size={13} />
+                        </button>
+                        <button
+                          onClick={() => setZoomLevel(1.0)}
+                          className="p-1.5 rounded-lg text-[#666666] hover:text-[#222222] hover:bg-white hover:shadow-xs transition-all border-l border-[#E7DDD5] rounded-l-none"
+                          title="Reset Zoom"
+                        >
+                          <Maximize2 size={13} />
+                        </button>
+                      </div>
+                    )}
+
                     {/* Layout Toggles */}
                     <div className="flex items-center gap-0.5 rounded-xl border border-[#E7DDD5] p-0.5 bg-[#FAF8F5]">
                       <button
@@ -681,54 +715,114 @@ export const SeatingPlan: React.FC = () => {
                       </button>
                     </div>
                   ) : viewMode === 'grid' ? (
-                    /* Display Grid Framework Blueprint */
-                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-3.5">
-                      {processedAssignments.map((assignment, index) => {
-                        const candidate = studentMap[assignment.rollNo];
-                        if (!candidate) return null;
-                        const isInspected = selectedStudentSeat?.student.rollNo === candidate.rollNo;
+                    /* Display 2D Spatial Layout Grid of Classroom */
+                    (() => {
+                      const activeRoomObj = classrooms.find((r) => r.roomNo === activeRoomNo);
+                      const rows = activeRoomObj?.rows || 6;
+                      const cols = activeRoomObj?.cols || 6;
 
-                        return (
-                          <div
-                            key={index}
-                            onClick={() => setSelectedStudentSeat({ 
-                              student: candidate, 
-                              seatNo: assignment.seatNo, 
-                              roomNo: assignment.roomNo 
-                            })}
-                            className={`group cursor-pointer rounded-xl border p-4 transition-all duration-200 hover:-translate-y-0.5 flex flex-col justify-between h-32
-                            ${isInspected 
-                              ? "border-[#222222] bg-white ring-1 ring-[#222222] shadow-xs" 
-                              : "border-[#E7DDD5] bg-[#FAF8F5] hover:border-[#222222] hover:bg-white hover:shadow-xs"}`}
-                          >
-                            <div className="flex items-center justify-between gap-1.5">
-                              <span className="text-[9px] font-bold tracking-wider text-[#666666] uppercase">Position</span>
-                              <span className="rounded-md bg-white px-2 py-0.5 text-[11px] font-mono font-bold text-[#222222] shadow-xs border border-[#E7DDD5]">
-                                {assignment.seatNo}
-                              </span>
-                            </div>
-                            
-                            <div className="my-2 truncate">
-                              <p className="truncate text-xs font-bold text-[#222222]" title={candidate.name}>
-                                {candidate.name}
-                              </p>
-                              <p className="text-[10px] text-[#666666] font-mono mt-0.5">
-                                {candidate.rollNo}
-                              </p>
-                            </div>
+                      const getAssignmentAt = (r: number, c: number) => {
+                        return activeRoomAssignments.find((a) => {
+                          const label1 = `R${r}C${c}`;
+                          const label2 = `R${r}-C${c}`;
+                          return a.seatNo === label1 || a.seatNo === label2;
+                        });
+                      };
 
-                            <div className="flex items-center justify-between gap-1 mt-1 pt-2 border-t border-[#E7DDD5]/60">
-                              <span className={`inline-block truncate rounded px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-tight max-w-[80%] ${getDeptStyles(candidate.department)}`}>
-                                {candidate.department}
-                              </span>
-                              <span className="text-[9px] font-semibold font-mono text-[#666666]">
-                                Sec-{candidate.section || 'A'}
-                              </span>
+                      const checkIsMatch = (rollNo: string) => {
+                        const student = studentMap[rollNo];
+                        if (!student) return false;
+                        if (searchTerm.trim()) {
+                          const query = searchTerm.toLowerCase();
+                          const matchesName = student.name.toLowerCase().includes(query);
+                          const matchesRoll = student.rollNo.toLowerCase().includes(query);
+                          if (!matchesName && !matchesRoll) return false;
+                        }
+                        if (departmentFilter !== 'All') {
+                          if (student.department !== departmentFilter) return false;
+                        }
+                        return true;
+                      };
+
+                      return (
+                        <div className="overflow-auto border border-[#E7DDD5] rounded-3xl bg-[#FAF8F5]/30 p-6 custom-scrollbar">
+                          <div style={{ transform: `scale(${zoomLevel})`, transformOrigin: 'top left', width: `${100 / zoomLevel}%` }}>
+                            <div 
+                              className="grid gap-3.5"
+                              style={{
+                                gridTemplateColumns: `repeat(${cols}, minmax(130px, 1fr))`
+                              }}
+                            >
+                              {Array.from({ length: rows }).map((_, rIdx) => {
+                                const r = rIdx + 1;
+                                return Array.from({ length: cols }).map((_, cIdx) => {
+                                  const c = cIdx + 1;
+                                  const assignment = getAssignmentAt(r, c);
+                                  const candidate = assignment ? studentMap[assignment.rollNo] : null;
+
+                                  if (candidate) {
+                                    const matched = checkIsMatch(candidate.rollNo);
+                                    const isInspected = selectedStudentSeat?.student.rollNo === candidate.rollNo;
+
+                                    return (
+                                      <div
+                                        key={`r${r}c${c}`}
+                                        onClick={() => setSelectedStudentSeat({ 
+                                          student: candidate, 
+                                          seatNo: assignment.seatNo, 
+                                          roomNo: assignment.roomNo 
+                                        })}
+                                        className={`group cursor-pointer rounded-2xl border p-3.5 transition-all duration-200 hover:-translate-y-0.5 flex flex-col justify-between h-28 select-none
+                                        ${isInspected 
+                                          ? "border-[#222222] bg-white ring-1 ring-[#222222] shadow-sm" 
+                                          : "border-[#E7DDD5] bg-white hover:border-[#222222] hover:shadow-xs"}
+                                        ${!matched ? 'opacity-25 filter blur-[0.5px] hover:opacity-100 hover:filter-none transition-all' : ''}`}
+                                        title={`${candidate.name} (${candidate.rollNo}) - Seat R${r}-C${c}`}
+                                      >
+                                        <div className="flex items-center justify-between">
+                                          <span className="text-[8px] font-bold tracking-wider text-[#8A7E76] uppercase">R{r}-C{c}</span>
+                                          <span className="rounded bg-[#FAF8F5] px-1.5 py-0.5 text-[10px] font-mono font-bold text-[#222222] border border-[#E7DDD5] shadow-2xs">
+                                            {assignment.seatNo}
+                                          </span>
+                                        </div>
+                                        
+                                        <div className="my-1.5 truncate">
+                                          <p className="truncate text-xs font-bold text-[#222222]" title={candidate.name}>
+                                            {candidate.name}
+                                          </p>
+                                          <p className="text-[9px] text-[#666666] font-mono mt-0.5">
+                                            {candidate.rollNo}
+                                          </p>
+                                        </div>
+
+                                        <div className="flex items-center justify-between gap-1 border-t border-[#E7DDD5]/60 pt-1.5">
+                                          <span className={`inline-block truncate rounded px-1.5 py-0.5 text-[8px] font-bold uppercase tracking-tight max-w-[70%] ${getDeptStyles(candidate.department)}`}>
+                                            {candidate.department}
+                                          </span>
+                                          <span className="text-[8px] font-bold font-mono text-[#8A7E76]">
+                                            Sec-{candidate.section || 'A'}
+                                          </span>
+                                        </div>
+                                      </div>
+                                    );
+                                  } else {
+                                    return (
+                                      <div
+                                        key={`r${r}c${c}`}
+                                        className="rounded-2xl border border-dashed border-[#E7DDD5] bg-[#FAF8F5]/40 flex flex-col items-center justify-center h-28 text-center select-none"
+                                      >
+                                        <span className="text-[8px] font-bold text-[#C5BDB5] uppercase tracking-wider">R{r}-C{c}</span>
+                                        <span className="text-[10px] font-medium text-[#C5BDB5] mt-1.5">Empty Desk</span>
+                                      </div>
+                                    );
+                                  }
+                                });
+                              })}
                             </div>
                           </div>
-                        );
-                      })}
-                    </div>
+                        </div>
+                      );
+                    })()
                   ) : (
                     /* Display List View Variant */
                     <div className="overflow-x-auto border border-[#E7DDD5] rounded-2xl bg-white shadow-xs">
