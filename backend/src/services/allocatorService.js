@@ -5,12 +5,16 @@ const runAllocator = (inputPath, outputPath, strategy = "Snake") => {
 
     return new Promise((resolve, reject) => {
 
-        const exePath = path.join(
+        const enginePath = path.join(
             __dirname,
             "..",
             "..",
             "..",
-            "cpp-engine",
+            "cpp-engine"
+        );
+
+        const exePath = path.join(
+            enginePath,
             "allocator.exe"
         );
 
@@ -22,17 +26,33 @@ const runAllocator = (inputPath, outputPath, strategy = "Snake") => {
             stderrData += data.toString();
         });
 
-        process.on("close", (code) => {
+        const outputPath = path.join(
+            enginePath,
+            "test",
+            "output.json"
+        );
+
+        const allocator = spawn(exePath, [
+            inputPath,
+            outputPath
+        ]);
+
+        allocator.on("close", (code) => {
 
             if (code === 0) {
-                resolve("Allocator executed successfully.");
+
+                resolve({
+                    success: true,
+                    outputPath
+                });
+
             } else {
                 reject(new Error(`Allocator exited with code ${code}. Details: ${stderrData.trim() || 'No stderr details available.'}`));
             }
 
         });
 
-        process.on("error", (err) => {
+        allocator.on("error", (err) => {
             reject(err);
         });
 
