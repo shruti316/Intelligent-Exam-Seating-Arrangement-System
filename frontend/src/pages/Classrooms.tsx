@@ -109,14 +109,15 @@ export const Classrooms: React.FC = () => {
   };
 
   const columns: Column<Classroom>[] = [
-    { header: 'Room No', accessor: 'roomNo' },
-    { header: 'Rows', accessor: 'rows' },
-    { header: 'Columns', accessor: 'cols' },
-    { header: 'Capacity (Rows × Cols)', accessor: (row) => `${row.capacity} desks` },
-    { header: 'Zone', accessor: 'zone' },
+    { header: 'Room No', key: 'roomNo' },
+    { header: 'Rows', key: 'rows' },
+    { header: 'Columns', key: 'cols' },
+    { header: 'Capacity (Rows × Cols)', key: 'capacity', render: (row: Classroom) => `${row.capacity} desks` },
+    { header: 'Zone', key: 'zone' },
     {
       header: 'Actions',
-      accessor: (row) => (
+      key: 'actions',
+      render: (row: Classroom) => (
         <div className="flex items-center gap-3">
           <button 
             onClick={() => handleOpenEditModal(row)}
@@ -151,7 +152,7 @@ export const Classrooms: React.FC = () => {
 
       <Card
         title="Classrooms Configuration"
-        headerActions={
+        actions={
           <Button onClick={handleOpenAddModal} variant="primary" size="sm" className="gap-2 rounded-xl">
             <Plus className="w-4 h-4" />
             Add Classroom
@@ -170,7 +171,6 @@ export const Classrooms: React.FC = () => {
           <Table
             columns={columns}
             data={classrooms}
-            rowKey={(classroom) => classroom.id}
             emptyMessage="No classrooms defined yet."
           />
         )}

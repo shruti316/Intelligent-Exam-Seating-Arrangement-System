@@ -163,14 +163,15 @@ export const Students: React.FC = () => {
   const departmentsList = ['All', ...Array.from(new Set(students.map(s => s.department)))];
 
   const columns: Column<Student>[] = [
-    { header: 'Roll No', accessor: 'rollNo' },
-    { header: 'Name', accessor: 'name' },
-    { header: 'Department', accessor: 'department' },
-    { header: 'Section', accessor: 'section' },
-    { header: 'Semester', accessor: (row) => row.semester ?? 'N/A' },
+    { header: 'Roll No', key: 'rollNo' },
+    { header: 'Name', key: 'name' },
+    { header: 'Department', key: 'department' },
+    { header: 'Section', key: 'section' },
+    { header: 'Semester', key: 'semester', render: (row: Student) => row.semester ?? 'N/A' },
     {
       header: 'Actions',
-      accessor: (row) => (
+      key: 'actions',
+      render: (row: Student) => (
         <div className="flex items-center gap-3">
           <button 
             onClick={() => handleOpenEditModal(row)}
@@ -260,7 +261,6 @@ export const Students: React.FC = () => {
           <Table
             columns={columns}
             data={filteredStudents}
-            rowKey={(student) => student.id}
             emptyMessage="No students match the search query or filters."
           />
         )}

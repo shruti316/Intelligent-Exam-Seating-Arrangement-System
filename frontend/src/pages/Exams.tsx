@@ -20,7 +20,6 @@ export const Exams: React.FC = () => {
   const [examDate, setExamDate] = useState('');
   const [startTime, setStartTime] = useState('');
   const [endTime, setEndTime] = useState('');
-  const [duration, setDuration] = useState(180);
   const [validationError, setValidationError] = useState('');
 
   const showToast = (message: string, type: 'success' | 'error' = 'success') => {
@@ -52,7 +51,6 @@ export const Exams: React.FC = () => {
     setExamDate('');
     setStartTime('');
     setEndTime('');
-    setDuration(180);
     setValidationError('');
     setIsModalOpen(true);
   };
@@ -64,7 +62,6 @@ export const Exams: React.FC = () => {
     setExamDate(exam.examDate);
     setStartTime(exam.startTime);
     setEndTime(exam.endTime);
-    setDuration(exam.duration);
     setValidationError('');
     setIsModalOpen(true);
   };
@@ -127,15 +124,16 @@ export const Exams: React.FC = () => {
   };
 
   const columns: Column<Exam>[] = [
-    { header: 'Subject Code', accessor: 'subjectCode' },
-    { header: 'Subject Name', accessor: 'subjectName' },
-    { header: 'Date', accessor: 'examDate' },
-    { header: 'Start Time', accessor: 'startTime' },
-    { header: 'End Time', accessor: 'endTime' },
-    { header: 'Duration', accessor: (row) => `${row.duration} mins` },
+    { header: 'Subject Code', key: 'subjectCode' },
+    { header: 'Subject Name', key: 'subjectName' },
+    { header: 'Date', key: 'examDate' },
+    { header: 'Start Time', key: 'startTime' },
+    { header: 'End Time', key: 'endTime' },
+    { header: 'Duration', key: 'duration', render: (row: Exam) => `${row.duration} mins` },
     {
       header: 'Actions',
-      accessor: (row) => (
+      key: 'actions',
+      render: (row: Exam) => (
         <div className="flex items-center gap-3">
           <button 
             onClick={() => handleOpenEditModal(row)}
@@ -170,7 +168,7 @@ export const Exams: React.FC = () => {
 
       <Card
         title="Scheduled Examinations"
-        headerActions={
+        actions={
           <Button onClick={handleOpenAddModal} variant="primary" size="sm" className="gap-2 rounded-xl">
             <Plus className="w-4 h-4" />
             Create Exam
@@ -189,7 +187,6 @@ export const Exams: React.FC = () => {
           <Table
             columns={columns}
             data={exams}
-            rowKey={(exam) => exam.id}
             emptyMessage="No examinations scheduled yet."
           />
         )}
