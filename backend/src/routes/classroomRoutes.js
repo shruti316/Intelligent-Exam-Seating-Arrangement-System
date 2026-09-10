@@ -5,10 +5,13 @@ const {
     getClassroomById,
     createClassroom,
     updateClassroom,
-    deleteClassroom
+    deleteClassroom,
+    getClassroomAvailability
 } = require("../controllers/classroomControllers");
 
 router.get("/", getAllClassrooms);
+
+router.get("/availability/:examId", getClassroomAvailability);
 
 router.get("/:id", getClassroomById);
 
@@ -18,4 +21,4 @@ router.put("/:id", updateClassroom);
 
 router.delete("/:id", deleteClassroom);
 
-module.exports = router;
+module.exports = router;

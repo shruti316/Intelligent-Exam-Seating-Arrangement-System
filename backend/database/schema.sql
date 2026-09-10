@@ -83,11 +83,16 @@ CREATE TABLE exam_registrations (
 CREATE TABLE seating_plans (
     plan_id INT AUTO_INCREMENT PRIMARY KEY,
     exam_id INT NOT NULL,
-    algorithm_version VARCHAR(50),
+    algorithm_version VARCHAR(50) DEFAULT 'v1.0-cpp',
+    total_students INT DEFAULT 0,
+    occupied_seats INT DEFAULT 0,
+    empty_seats INT DEFAULT 0,
+    conflict_count INT DEFAULT 0,
+    execution_time_ms DOUBLE DEFAULT 0.0,
     generated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
     FOREIGN KEY (exam_id)
-        REFERENCES exams(exam_id)
+        REFERENCES exams(exam_id) ON DELETE CASCADE
 );
 
 -- ==========================

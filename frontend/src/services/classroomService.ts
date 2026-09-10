@@ -45,7 +45,40 @@ export const classroomService = {
       zone: classroom.zone
     };
     await api.put(`/classrooms/${id}`, backendData);
+  },
+
+  async getClassroomAvailability(examId: number): Promise<{
+    occupiedClassrooms: Array<{
+      classroomId: number;
+      roomNo: string;
+      occupiedBy: {
+        examId: number;
+        examName: string;
+        subjectName: string;
+        subjectCode: string;
+        startTime: string;
+        endTime: string;
+      };
+    }>;
+  }> {
+    const response = await api.get<{
+      success: boolean;
+      occupiedClassrooms: Array<{
+        classroomId: number;
+        roomNo: string;
+        occupiedBy: {
+          examId: number;
+          examName: string;
+          subjectName: string;
+          subjectCode: string;
+          startTime: string;
+          endTime: string;
+        };
+      }>;
+    }>(`/classrooms/availability/${examId}`);
+    return response.data;
   }
 };
 
 export default classroomService;
+

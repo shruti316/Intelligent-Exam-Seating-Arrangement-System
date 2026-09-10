@@ -107,10 +107,78 @@ const deleteClassroom = (req, res) => {
     });
 };
 
+// Get Classroom Availability for an exam (checks overlapping exam time conflicts)
+const getClassroomAvailability = (req, res) => {
+    const examId = req.params.examId;
+
+    const examQuery = `
+        SELECT 
+            exam_id, 
+            exam_name, 
+            subject_name, 
+            exam_date, 
+            TIME_FORMAT(start_time, '%H:%i') AS start_time, 
+            TIME_FORMAT(end_time, '%H:%i') AS end_time 
+        FROM exams 
+        WHERE exam_id = ?
+    `;
+
+    db.query(examQuery, [examId], (err, exams) => {
+        if (err) return res.status(500).json({ success: false, message: err.message });
+        if (exams.length === 0) return res.status(404).json({ success: false, message: "Exam not found" });
+
+        const currentExam = exams[0];
+
+        const conflictQuery = `
+            SELECT DISTINCT
+                c.classroom_id,
+                c.room_no,
+                e.exam_id,
+                e.exam_name,
+                e.subject_name,
+                e.subject_code,
+                e.exam_date,
+                TIME_FORMAT(e.start_time, '%H:%i') AS start_time,
+                TIME_FORMAT(e.end_time, '%H:%i') AS end_time
+            FROM seat_assignments sa
+            JOIN seating_plans sp ON sa.plan_id = sp.plan_id
+            JOIN exams e ON sp.exam_id = e.exam_id
+            JOIN classrooms c ON sa.classroom_id = c.classroom_id
+            WHERE e.exam_id != ?
+              AND e.exam_date = ?
+              AND e.start_time < ?
+              AND e.end_time > ?
+        `;
+
+        db.query(conflictQuery, [examId, currentExam.exam_date, currentExam.end_time, currentExam.start_time], (conflictErr, occupied) => {
+            if (conflictErr) return res.status(500).json({ success: false, message: conflictErr.message });
+
+            res.status(200).json({
+                success: true,
+                examId: Number(examId),
+                exam: currentExam,
+                occupiedClassrooms: occupied.map(r => ({
+                    classroomId: r.classroom_id,
+                    roomNo: r.room_no,
+                    occupiedBy: {
+                        examId: r.exam_id,
+                        examName: r.exam_name,
+                        subjectName: r.subject_name,
+                        subjectCode: r.subject_code,
+                        startTime: r.start_time,
+                        endTime: r.end_time
+                    }
+                }))
+            });
+        });
+    });
+};
+
 module.exports = {
     getAllClassrooms,
     getClassroomById,
     createClassroom,
     updateClassroom,
-    deleteClassroom
-};
+    deleteClassroom,
+    getClassroomAvailability
+};

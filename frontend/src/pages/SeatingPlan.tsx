@@ -1,12 +1,15 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import examService from '../services/examService';
 import classroomService from '../services/classroomService';
+
 import allocationService from '../services/allocationService';
 import studentService from '../services/studentService';
+import registrationService, { type RegisteredStudent } from '../services/registrationService';
 import type { Exam } from '../types/Exam';
 import type { Classroom } from '../types/Classroom';
 import type { Student } from '../types/Student';
 import type { AllocationResult } from '../types/AllocationResult';
+import ExamRegistrationModal from '../components/exams/ExamRegistrationModal';
 
 import {
   Search,
@@ -27,7 +30,9 @@ import {
   HelpCircle,
   ZoomIn,
   ZoomOut,
-  Maximize2
+  Maximize2,
+  Users,
+  UserPlus
 } from "lucide-react";
 
 interface StudentLookupMap {
@@ -43,10 +48,14 @@ export const SeatingPlan: React.FC = () => {
   
   const [selectedExamId, setSelectedExamId] = useState<number | ''>('');
   const [selectedClassroomIds, setSelectedClassroomIds] = useState<number[]>([]);
+  const [registeredStudents, setRegisteredStudents] = useState<RegisteredStudent[]>([]);
+  const [occupiedRoomsMap, setOccupiedRoomsMap] = useState<Record<number, any>>({});
+  const [isRegModalOpen, setIsRegModalOpen] = useState(false);
   
   const [isGenerating, setIsGenerating] = useState(false);
   const [allocationResult, setAllocationResult] = useState<AllocationResult | null>(null);
   const [activeRoomNo, setActiveRoomNo] = useState<string>('');
+
   
   const [searchTerm, setSearchTerm] = useState('');
   const [departmentFilter, setDepartmentFilter] = useState<string>('All');
@@ -95,12 +104,42 @@ export const SeatingPlan: React.FC = () => {
     loadInitialData();
   }, []);
 
+  const selectedExam = useMemo(() => {
+    return exams.find((e) => e.id === Number(selectedExamId)) || null;
+  }, [exams, selectedExamId]);
+
+  const loadRegisteredStudentsAndAvailability = async (examId: number) => {
+    try {
+      const [regsData, availData] = await Promise.all([
+        registrationService.getRegistrationsByExam(examId),
+        classroomService.getClassroomAvailability(examId)
+      ]);
+      setRegisteredStudents(regsData || []);
+
+      const occMap: Record<number, any> = {};
+      if (availData && availData.occupiedClassrooms) {
+        availData.occupiedClassrooms.forEach((occ) => {
+          occMap[occ.classroomId] = occ.occupiedBy;
+        });
+      }
+      setOccupiedRoomsMap(occMap);
+
+      // Automatically uncheck any room that is occupied by another exam
+      setSelectedClassroomIds((prev) => prev.filter((id) => !occMap[id]));
+    } catch (err) {
+      console.error("Error loading candidate registrations / availability:", err);
+    }
+  };
+
   // --- Synchronization & Allocation Loading ---
   useEffect(() => {
     if (selectedExamId !== '') {
+      const id = Number(selectedExamId);
+      loadRegisteredStudentsAndAvailability(id);
+
       const fetchExistingPlan = async () => {
         try {
-          const result = await allocationService.getGeneratedPlans(selectedExamId);
+          const result = await allocationService.getGeneratedPlans(id);
           if (result && result.assignments && result.assignments.length > 0) {
             setAllocationResult(result);
             const uniqueRooms = Array.from(new Set(result.assignments.map((a) => a.roomNo)));
@@ -109,7 +148,7 @@ export const SeatingPlan: React.FC = () => {
             }
             // Automatically check classrooms present in the active layout
             const roomIdsToSelect = classrooms
-              .filter(r => uniqueRooms.includes(r.roomNo))
+              .filter(r => uniqueRooms.includes(r.roomNo) && !occupiedRoomsMap[r.id])
               .map(r => r.id);
             if (roomIdsToSelect.length > 0) {
               setSelectedClassroomIds(roomIdsToSelect);
@@ -126,13 +165,20 @@ export const SeatingPlan: React.FC = () => {
       };
       fetchExistingPlan();
     } else {
+      setRegisteredStudents([]);
+      setOccupiedRoomsMap({});
       setAllocationResult(null);
       setActiveRoomNo('');
+      setSelectedClassroomIds([]);
     }
   }, [selectedExamId, classrooms]);
 
   // --- Core Action Handlers ---
   const handleClassroomToggle = (classroomId: number) => {
+    if (occupiedRoomsMap[classroomId]) {
+      triggerToast("Classroom is occupied by another exam in this time slot.", "error");
+      return;
+    }
     setSelectedClassroomIds((prev) =>
       prev.includes(classroomId)
         ? prev.filter((id) => id !== classroomId) 
@@ -141,16 +187,33 @@ export const SeatingPlan: React.FC = () => {
   };
 
   const handleSelectAllClassrooms = () => {
-    if (selectedClassroomIds.length === classrooms.length) {
+    const selectable = classrooms.filter((c) => !occupiedRoomsMap[c.id]);
+    if (selectedClassroomIds.length === selectable.length) {
       setSelectedClassroomIds([]);
     } else {
-      setSelectedClassroomIds(classrooms.map(c => c.id));
+      setSelectedClassroomIds(selectable.map((c) => c.id));
     }
   };
 
   const handleGenerate = async () => {
-    if (selectedExamId === "" || selectedClassroomIds.length === 0) {
-      triggerToast("Please verify parameters before allocation.", "error");
+    if (selectedExamId === "") {
+      triggerToast("Please select an examination first.", "error");
+      return;
+    }
+
+    if (registeredStudents.length === 0) {
+      triggerToast("No candidates are registered for this exam. Please enroll students first.", "error");
+      setIsRegModalOpen(true);
+      return;
+    }
+
+    if (selectedClassroomIds.length === 0) {
+      triggerToast("Please select at least one classroom.", "error");
+      return;
+    }
+
+    if (totalCapacity < registeredStudents.length) {
+      triggerToast(`Insufficient capacity. Registered: ${registeredStudents.length}, Available: ${totalCapacity}.`, "error");
       return;
     }
 
@@ -160,7 +223,7 @@ export const SeatingPlan: React.FC = () => {
 
     try {
       const result = await allocationService.generateSeatingPlan(
-        selectedExamId,
+        Number(selectedExamId),
         selectedClassroomIds
       );
 
@@ -175,13 +238,14 @@ export const SeatingPlan: React.FC = () => {
       } else {
         triggerToast(result?.message || "Unable to complete allocation matrix.", "error");
       }
-    } catch (err) {
+    } catch (err: any) {
       console.error(err);
-      triggerToast("System error encountered during optimization runtime.", "error");
+      triggerToast(err.message || "System error encountered during optimization runtime.", "error");
     } finally {
       setIsGenerating(false);
     }
   };
+
 
   const triggerToast = (message: string, type: 'success' | 'error' | 'info' = 'success') => {
     setToastMessage(message);
@@ -243,9 +307,9 @@ export const SeatingPlan: React.FC = () => {
       .reduce((sum, room) => sum + room.capacity, 0);
   }, [classrooms, selectedClassroomIds]);
 
-  const studentsCount = students.length;
+  const studentsCount = registeredStudents.length;
   const utilization = totalCapacity === 0 ? 0 : Math.round((studentsCount / totalCapacity) * 100);
-  const isCapacitySufficient = totalCapacity >= studentsCount;
+  const isCapacitySufficient = studentsCount > 0 && totalCapacity >= studentsCount;
 
   const departmentsList = useMemo(() => {
     const depts = new Set<string>();
@@ -254,6 +318,7 @@ export const SeatingPlan: React.FC = () => {
     });
     return ['All', ...Array.from(depts)];
   }, [students]);
+
 
   const getDeptStyles = (department: string) => {
     switch (department?.toLowerCase()) {
@@ -403,6 +468,30 @@ export const SeatingPlan: React.FC = () => {
                     <Layers size={14} />
                   </div>
                 </div>
+
+                {/* Candidate Enrollment Status for Selected Exam */}
+                {selectedExamId !== '' && (
+                  <div className="mt-3 flex items-center justify-between p-3 rounded-2xl bg-[#FAF8F5] border border-[#ECE4DD] animate-in fade-in duration-200">
+                    <div className="flex items-center gap-2 text-xs">
+                      <Users size={15} className={registeredStudents.length > 0 ? "text-[#2F6E99]" : "text-amber-600"} />
+                      <span>
+                        {registeredStudents.length > 0 ? (
+                          <><strong className="text-[#2D2825] font-bold">{registeredStudents.length}</strong> candidates enrolled</>
+                        ) : (
+                          <span className="text-amber-700 font-semibold">0 candidates enrolled</span>
+                        )}
+                      </span>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setIsRegModalOpen(true)}
+                      className="text-xs font-semibold px-2.5 py-1 rounded-xl bg-indigo-50 text-indigo-700 hover:bg-indigo-100 transition border border-indigo-200 inline-flex items-center gap-1 cursor-pointer"
+                    >
+                      <UserPlus size={12} />
+                      {registeredStudents.length > 0 ? "Manage" : "Enroll Now"}
+                    </button>
+                  </div>
+                )}
               </div>
 
               {/* Room Selection Block */}
@@ -416,7 +505,9 @@ export const SeatingPlan: React.FC = () => {
                     onClick={handleSelectAllClassrooms}
                     className="text-xs font-medium text-[#666666] hover:text-[#222222] transition underline underline-offset-4 decoration-[#E7DDD5]"
                   >
-                    {selectedClassroomIds.length === classrooms.length ? "Deselect All" : "Select All"}
+                    {selectedClassroomIds.length === classrooms.filter(c => !occupiedRoomsMap[c.id]).length && selectedClassroomIds.length > 0
+                      ? "Deselect All" 
+                      : "Select All Available"}
                   </button>
                 </div>
 
@@ -426,6 +517,33 @@ export const SeatingPlan: React.FC = () => {
                   ) : (
                     classrooms.map((room) => {
                       const isChecked = selectedClassroomIds.includes(room.id);
+                      const occupied = occupiedRoomsMap[room.id];
+
+                      if (occupied) {
+                        return (
+                          <div
+                            key={room.id}
+                            className="flex flex-col gap-1 rounded-xl border border-rose-200 bg-rose-50/60 p-3 select-none opacity-80 cursor-not-allowed"
+                            title={`Room is occupied by ${occupied.subjectName || occupied.examName} (${occupied.startTime} - ${occupied.endTime})`}
+                          >
+                            <div className="flex items-center justify-between">
+                              <div className="flex items-center gap-2.5">
+                                <TriangleAlert size={14} className="text-rose-600 flex-shrink-0" />
+                                <p className="text-xs font-bold text-rose-800">
+                                  Hall {room.roomNo}
+                                </p>
+                              </div>
+                              <span className="text-[10px] font-bold text-rose-700 uppercase bg-rose-100/80 px-2 py-0.5 rounded">
+                                Conflicted
+                              </span>
+                            </div>
+                            <p className="text-[11px] text-rose-700 pl-6">
+                              Occupied by "{occupied.subjectName || occupied.examName}" ({occupied.startTime}–{occupied.endTime})
+                            </p>
+                          </div>
+                        );
+                      }
+
                       return (
                         <div
                           key={room.id}
@@ -455,6 +573,7 @@ export const SeatingPlan: React.FC = () => {
                   )}
                 </div>
               </div>
+
 
               {/* Advanced Realtime Metrics Display Panel */}
               {selectedClassroomIds.length > 0 && (
@@ -1014,8 +1133,23 @@ export const SeatingPlan: React.FC = () => {
         </div>
       )}
 
+      {/* Candidate Enrollment Modal */}
+      {isRegModalOpen && selectedExam && (
+        <ExamRegistrationModal
+          exam={selectedExam}
+          isOpen={isRegModalOpen}
+          onClose={() => setIsRegModalOpen(false)}
+          onRegistrationChange={() => {
+            if (selectedExamId !== '') {
+              loadRegisteredStudentsAndAvailability(Number(selectedExamId));
+            }
+          }}
+        />
+      )}
+
     </div>
   );
 };
 
-export default SeatingPlan; 
+export default SeatingPlan;
+ 

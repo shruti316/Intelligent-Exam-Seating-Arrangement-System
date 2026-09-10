@@ -1,28 +1,8 @@
 const seatingService = require("../services/seatingService");
 const viewSeatingService = require("../services/viewSeatingService");
 
-// GET /api/seating/input/:examId
-const getSeatingInput = async (req, res) => {
-
-    try {
-
-        const examId = req.params.examId;
-        const data = await seatingService.generateSeating(examId);
-
-        res.json(data);
-
-    } catch (err) {
-
-        res.status(500).json({
-            success: false,
-            message: err.message
-        });
-
-    }
-
-};
-
 // POST /api/seating/generate
+
 const generateSeating = async (req, res) => {
 
     try {
@@ -81,7 +61,6 @@ const getSeatingByExam = async (req, res) => {
 };
 
 module.exports = {
-    getSeatingInput,
     generateSeating,
     getSeatingByExam
-};
+};

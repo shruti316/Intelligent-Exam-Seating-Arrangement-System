@@ -5,14 +5,17 @@ import Table from '../components/common/Table';
 import type { Column } from '../components/common/Table';
 import Button from '../components/common/Button';
 import Card from '../components/common/Card';
-import { Plus, Edit, Trash2, X } from 'lucide-react';
+import { Plus, Edit, Trash2, X, Users } from 'lucide-react';
+import ExamRegistrationModal from '../components/exams/ExamRegistrationModal';
 
 export const Exams: React.FC = () => {
   const [exams, setExams] = useState<Exam[]>([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingExam, setEditingExam] = useState<Exam | null>(null);
+  const [selectedExamForReg, setSelectedExamForReg] = useState<Exam | null>(null);
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
+
 
   // Form states
   const [subjectName, setSubjectName] = useState('');
@@ -134,17 +137,25 @@ export const Exams: React.FC = () => {
       header: 'Actions',
       key: 'actions',
       render: (row: Exam) => (
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2">
+          <button 
+            onClick={() => setSelectedExamForReg(row)}
+            className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-semibold rounded-lg bg-indigo-50 text-indigo-700 hover:bg-indigo-100 transition border border-indigo-200"
+            title="Manage candidate registrations for this exam"
+          >
+            <Users size={13} />
+            Candidates
+          </button>
           <button 
             onClick={() => handleOpenEditModal(row)}
-            className="text-slate-600 hover:text-indigo-600 p-1 rounded-lg hover:bg-slate-100 transition"
+            className="text-slate-600 hover:text-indigo-600 p-1.5 rounded-lg hover:bg-slate-100 transition"
             title="Edit exam schedule"
           >
             <Edit size={15} />
           </button>
           <button 
             onClick={() => handleDeleteExam(row.id)}
-            className="text-slate-600 hover:text-rose-600 p-1 rounded-lg hover:bg-slate-100 transition"
+            className="text-slate-600 hover:text-rose-600 p-1.5 rounded-lg hover:bg-slate-100 transition"
             title="Delete exam record"
           >
             <Trash2 size={15} />
@@ -283,8 +294,19 @@ export const Exams: React.FC = () => {
         </div>
       )}
 
+      {/* Candidate Registration Modal */}
+      {selectedExamForReg && (
+        <ExamRegistrationModal
+          exam={selectedExamForReg}
+          isOpen={!!selectedExamForReg}
+          onClose={() => setSelectedExamForReg(null)}
+          onRegistrationChange={() => loadExams()}
+        />
+      )}
+
     </div>
   );
 };
 
 export default Exams;
+
